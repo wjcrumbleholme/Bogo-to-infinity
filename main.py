@@ -1,7 +1,7 @@
 from random import shuffle
+from colorama import Fore, Back, Style
 import time
-start_time=time.time()
-
+# start_time=time.time()
 
 def makeNewList(length):
     global list_shuffled, list_of_num
@@ -10,41 +10,51 @@ def makeNewList(length):
     list_shuffled = list_of_num[:]
     shuffle(list_shuffled)
 
-def alikeness():
-    global total_alikeness
+def shuffleList (list):
+    shuffle(list)
+
+def alikeness(list1):
     total_alikeness = 0
-    for i in range(0, len(list_shuffled) - 1):
+    for i in range(0, len(list1) - 1):
         total_alikeness += abs(list_shuffled[i] - (i+1))
-    print(total_alikeness)
+    alikecol(total_alikeness, list1)
     
-def alikecol():
-    global total_alikeness
+
+def alikecol(total_alikeness, list1):
     sumTotal = sum(list_of_num) 
-    #lower quartile (25%)
-    lq = sumTotal / 4
-    mid = sumTotal / 2 
-    uq = sumTotal / 4 * 3
+    lq = sumTotal / 100 * 25
+    mid = sumTotal / 100 * 45 
+    uq = sumTotal / 100 * 65
     
+    #lower alikeness is better
     if total_alikeness > uq:
-        print("red")
-        pass
+        print(Fore.RED + str(list1))
     elif total_alikeness > mid:
-        print("yellow")
-        pass
+        print(Fore.YELLOW + str(list1))
     elif total_alikeness > lq:
-        print('green')
-        pass
+        print(Fore.GREEN + str(list1))
     else:
-        print('gold')
-        pass
-    
-            
+        print(Fore.CYAN + str(list1))
 
 
-current_list_length = 10
+def sortChecker(list1):
+    sorted = False
+    temp = 0
+    while sorted == False:
+        sorted = True
+        for i in range(0, len(list1) - 1):
+            if list1[i+1] < list1[i]:
+                sorted = False
+        alikeness(list1)
+        shuffleList(list1)
+
+
+current_list_length = 7
 makeNewList(current_list_length)
-alikeness()
-alikecol()
+t1 = time.time()
+sortChecker(list_shuffled)
+t2 = time.time()-t1
+print(f"sortChecker took {t2} seconds")
 
 
 # while True:
@@ -60,8 +70,6 @@ alikecol()
 #     makeNewList(current_list_length)
         
 makeNewList(10)
-alikecol()
-
 
 #---TODO---
 # Previous times for sort + 1
