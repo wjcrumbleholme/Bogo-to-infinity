@@ -74,6 +74,7 @@ def main(page: ft.Page):
         paper_bgcolor="rgba(0,0,0,0)",
         xaxis_color="#FFFFFF",
         plot_bgcolor='rgba(0,0,0,0)',
+        bargap = 0,
     )
     barGraph.update_xaxes(
         showline = True,
@@ -86,38 +87,80 @@ def main(page: ft.Page):
         showticklabels = False,
     )
 
-    page.add(
-        ft.Container(
-            content=ft.Text("Bogo to Infinity", font_family="Boldena", size="48"),
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.Alignment(-0.9,0),
-            bgcolor="#89A8BD",
-            width=626,
-            height=83,
-            border_radius=10,
-        ),
-        ft.Container(
-            content=PlotlyChart(barGraph,expand=True),
-            margin=10,
-            padding=10,
-            alignment=ft.alignment.center,
-            bgcolor="#89A8BD",
-            width=875,
-            height=526,
-            border_radius=10,
-            
-        ),
-        ft.Container(
-            content=PlotlyChart(boxPlot,expand=True),
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor="#89A8BD",
-            width=875,
-            height=320,
-            border_radius=10,
+
+    def left_column(align: ft.CrossAxisAlignment):
+        return ft.Column (
+            [
+            ft.Container(
+                content=ft.Text("Bogo to Infinity", font_family="Boldena", size="48"),
+                margin=2,
+                padding=2,
+                alignment=ft.alignment.Alignment(-0.9,0),
+                bgcolor="#89A8BD",
+                width=626,
+                height=80,
+                border_radius=10,
+            ),
+            ft.Container(
+                content=PlotlyChart(barGraph,expand=True),
+                margin=2,
+                padding=2,
+                alignment=ft.alignment.center,
+                bgcolor="#89A8BD",
+                width=875,
+                height=526,
+                border_radius=10,
+                
+            ),
+            ft.Container(
+                content=PlotlyChart(boxPlot,expand=True),
+                margin=2,
+                padding=2,
+                alignment=ft.alignment.center,
+                bgcolor="#89A8BD",
+                width=875,
+                height=320,
+                border_radius=10,
+            ),
+            ]
         )
+    
+    def right_column(align: ft.CrossAxisAlignment):
+        return ft.Column(
+            [
+            ft.Container(
+                content=ft.Text("Bogo to Infinity", font_family="Boldena", size="48"),
+                margin=2,
+                padding=2,
+                alignment=ft.alignment.center,
+                bgcolor="#89A8BD",
+                width=500,
+                height=313,
+                border_radius=10,
+            ),
+            ft.Container(
+                content=ft.Text("Bogo to Infinity", font_family="Boldena", size="48"),
+                margin=2,
+                padding=2,
+                alignment=ft.alignment.center,
+                bgcolor="#89A8BD",
+                width=500,
+                height=671,
+                border_radius=10,
+            ),
+            ]
+        )
+
+    page.add(
+        ft.Row(
+        [
+            left_column(ft.CrossAxisAlignment.START),
+            right_column(ft.CrossAxisAlignment.END)
+        ],
+        spacing=15,
+        alignment=ft.MainAxisAlignment.START,
+        ),
+
     )
 
 ft.app(target=main)
