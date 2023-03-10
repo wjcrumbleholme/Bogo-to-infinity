@@ -23,9 +23,7 @@ def main(page: ft.Page):
     ))
 
     page.add(
-        ft.Row(
-            PlotlyChart(fig, expand=True)
-        )
+        PlotlyChart(fig, expand=True)
 
         
         )
