@@ -98,7 +98,7 @@ def main(page: ft.Page):
                 alignment=ft.alignment.Alignment(-0.9,0),
                 bgcolor="#89A8BD",
                 width=626,
-                height=80,
+                height=83,
                 border_radius=10,
             ),
             ft.Container(
@@ -110,7 +110,6 @@ def main(page: ft.Page):
                 width=875,
                 height=526,
                 border_radius=10,
-                
             ),
             ft.Container(
                 content=PlotlyChart(boxPlot,expand=True),
@@ -155,10 +154,11 @@ def main(page: ft.Page):
         ft.Row(
         [
             left_column(ft.CrossAxisAlignment.START),
-            right_column(ft.CrossAxisAlignment.END)
+            right_column(ft.CrossAxisAlignment.END),
         ],
         spacing=15,
         alignment=ft.MainAxisAlignment.START,
+        vertical_alignment=ft.CrossAxisAlignment.START,
         ),
 
     )
