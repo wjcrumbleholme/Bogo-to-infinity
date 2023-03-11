@@ -60,8 +60,8 @@ def main(page: ft.Page):
     ))    
     barGraph.update_layout(
         autosize = False,
-        width=1700,
-        height=1000,
+        width=1500,
+        height=900,
         margin=dict(
             l=0,
             r=0,
@@ -104,7 +104,7 @@ def main(page: ft.Page):
             ft.Container(
                 content=PlotlyChart(barGraph,expand=True),
                 margin=2,
-                padding=2,
+                padding=20,
                 alignment=ft.alignment.center,
                 bgcolor="#89A8BD",
                 width=875,
@@ -176,7 +176,9 @@ def main(page: ft.Page):
                 content=
                 ft.Column(
                     [
-                    ft.Container(
+                    ft.Row(
+                        [
+                        ft.Container(
                         content=ft.Text("Previous times", font_family="Boldena", size="64"),
                         margin=2,
                         padding=2,
@@ -185,26 +187,34 @@ def main(page: ft.Page):
                         width=450,
                         height=100,
                         border_radius=10,
-                    ),
-                    ft.Container(
-                        margin=2,
-                        padding=2,
-                        alignment=ft.alignment.center,
-                        bgcolor="#162127",
-                        width=450,
-                        height=5,
-                        border_radius=10,
+                        ),
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
                     ),
                     ft.Row(
                         [
-                            ft.Column(
+                        ft.Container(
+                            margin=2,
+                            padding=2,
+                            alignment=ft.alignment.center,
+                            bgcolor="#162127",
+                            width=450,
+                            height=5,
+                            border_radius=10,
+                        ),
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                    ),
+                    ft.Row(
+                        [
+                        ft.Column(
                                 [
                                     ft.Container(
                                         content=ft.Text("1", font_family="Boldena", size="32"),
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
-                                        bgcolor="#162127",
+                                        bgcolor="#426276",
                                         width=220,
                                         height=150,
                                         border_radius=10,
@@ -214,7 +224,7 @@ def main(page: ft.Page):
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
-                                        bgcolor="#162127",
+                                        bgcolor="#426276",
                                         width=220,
                                         height=150,
                                         border_radius=10,
@@ -224,21 +234,21 @@ def main(page: ft.Page):
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
-                                        bgcolor="#162127",
+                                        bgcolor="#426276",
                                         width=220,
                                         height=150,
                                         border_radius=10,
                                         ),
                                 ]
                             ),
-                            ft.Column(
+                        ft.Column(
                                 [
                                     ft.Container(
                                         content=ft.Text("4", font_family="Boldena", size="32"),
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
-                                        bgcolor="#162127",
+                                        bgcolor="#426276",
                                         width=220,
                                         height=150,
                                         border_radius=10,
@@ -248,7 +258,7 @@ def main(page: ft.Page):
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
-                                        bgcolor="#162127",
+                                        bgcolor="#426276",
                                         width=220,
                                         height=150,
                                         border_radius=10,
@@ -258,7 +268,7 @@ def main(page: ft.Page):
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
-                                        bgcolor="#162127",
+                                        bgcolor="#426276",
                                         width=220,
                                         height=150,
                                         border_radius=10,
@@ -267,19 +277,20 @@ def main(page: ft.Page):
                                 
                             ),
                         ],
+                        alignment=ft.MainAxisAlignment.CENTER,
                     )
                     ], 
-                    alignment=ft.MainAxisAlignment.CENTER,
+                    alignment=ft.CrossAxisAlignment.CENTER,
                 ),
                 margin=2,
-                padding=2,
+                padding=10,
                 alignment=ft.alignment.center,
                 bgcolor="#89A8BD",
                 width=500,
-                height=671,
+                height=630,
                 border_radius=10,
             ),
-            ]
+            ],
         )
 
     page.add(
