@@ -39,17 +39,19 @@ def alikecol(total_alikeness, list1):
 
 def sortChecker(list1):
     sorted = False
-    temp = 0
+    tries = 0
     while sorted == False:
         sorted = True
         for i in range(0, len(list1) - 1):
             if list1[i+1] < list1[i]:
                 sorted = False
+        tries += 1
         alikeness(list1)
         shuffleList(list1)
+        print (tries)
 
 
-current_list_length = 7
+current_list_length = 15
 makeNewList(current_list_length)
 t1 = time.time()
 sortChecker(list_shuffled)
