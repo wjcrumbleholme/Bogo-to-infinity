@@ -1,18 +1,24 @@
 import plotly.graph_objects as go
-
+from timeit import default_timer as timer
 import flet as ft
 from flet.plotly_chart import PlotlyChart
+import time
 
+titleText = ft.Text(f"Bogo to Infinity - 0", font_family="Boldena", size="48")
+elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size="32")
 
 def main(page: ft.Page):
 
     page.title = "Bogo-to-infinity"
     page.window_height = 1024
     page.window_width = 1440
+    page.window_resizable = False
     page.bgcolor="#BECEDA"
     page.fonts = {
         'Boldena' : "fonts/BoldenaBold.ttf"
     }
+
+    currentNum = 0
 
     boxPlot = go.Figure()
 
@@ -50,8 +56,6 @@ def main(page: ft.Page):
     )
 
     barGraph = go.Figure()
-
-    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     
     barGraph.add_trace(go.Bar(
         y=[20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
@@ -92,7 +96,7 @@ def main(page: ft.Page):
         return ft.Column (
             [
             ft.Container(
-                content=ft.Text("Bogo to Infinity", font_family="Boldena", size="48"),
+                content=titleText,
                 margin=2,
                 padding=2,
                 alignment=ft.alignment.Alignment(-0.9,0),
@@ -172,7 +176,7 @@ def main(page: ft.Page):
                         border_radius=10,
                     ),
                     ft.Container(
-                        content=ft.Text("Total time - 00:00:00", font_family="Boldena", size="32"),
+                        content=elapsedTimeText,
                         margin=2,
                         padding=2,
                         alignment=ft.alignment.Alignment(-0.9,0),
@@ -326,4 +330,31 @@ def main(page: ft.Page):
 
     )
 
+    startTime = timer()
+    while True:
+        endTime= timer()
+        total = endTime - startTime
+        seconds = total % 60
+        minutes = total // 60
+        hours = total // 3600
+        if seconds < 10:
+            seconds = f"0{int(seconds)}"
+        else:
+            seconds= int(seconds)
+        if minutes < 10:
+            minutes = f"0{int(minutes)}"
+        else:
+            minutes = int(minutes)
+        if hours < 10:
+            hours = f"0{int(hours)}"
+        else:
+            hours = int(hours)
+        elapsedTimeText.value = f"Total time - {hours}:{minutes}:{seconds}"
+        page.update()
+        time.sleep(1)
+        
+    
 ft.app(target=main)
+
+
+    
