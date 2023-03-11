@@ -128,7 +128,42 @@ def main(page: ft.Page):
         return ft.Column(
             [
             ft.Container(
-                content=ft.Text("Bogo to Infinity", font_family="Boldena", size="48"),
+                content=
+                ft.Column (
+                    [
+                    ft.Container(
+                        content=ft.Text("Current sort time - 00:00:00", font_family="Boldena", size="32"),
+                        margin=2,
+                        padding=2,
+                        alignment=ft.alignment.Alignment(-0.9,0),
+                        bgcolor="#426276",
+                        width=450,
+                        height=83,
+                        border_radius=10,
+                    ),
+                    ft.Container(
+                        content=ft.Text("Amount of tries - 0", font_family="Boldena", size="32"),
+                        margin=2,
+                        padding=2,
+                        alignment=ft.alignment.Alignment(-0.9,0),
+                        bgcolor="#426276",
+                        width=450,
+                        height=83,
+                        border_radius=10,
+                    ),
+                    ft.Container(
+                        content=ft.Text("Total time - 00:00:00", font_family="Boldena", size="32"),
+                        margin=2,
+                        padding=2,
+                        alignment=ft.alignment.Alignment(-0.9,0),
+                        bgcolor="#426276",
+                        width=450,
+                        height=83,
+                        border_radius=10,
+                    ),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                ),
                 margin=2,
                 padding=2,
                 alignment=ft.alignment.center,
@@ -138,7 +173,103 @@ def main(page: ft.Page):
                 border_radius=10,
             ),
             ft.Container(
-                content=ft.Text("Bogo to Infinity", font_family="Boldena", size="48"),
+                content=
+                ft.Column(
+                    [
+                    ft.Container(
+                        content=ft.Text("Previous times", font_family="Boldena", size="64"),
+                        margin=2,
+                        padding=2,
+                        alignment=ft.alignment.center,
+                        bgcolor="#426276",
+                        width=450,
+                        height=100,
+                        border_radius=10,
+                    ),
+                    ft.Container(
+                        margin=2,
+                        padding=2,
+                        alignment=ft.alignment.center,
+                        bgcolor="#162127",
+                        width=450,
+                        height=5,
+                        border_radius=10,
+                    ),
+                    ft.Row(
+                        [
+                            ft.Column(
+                                [
+                                    ft.Container(
+                                        content=ft.Text("1", font_family="Boldena", size="32"),
+                                        margin=2,
+                                        padding=2,
+                                        alignment=ft.alignment.center,
+                                        bgcolor="#162127",
+                                        width=220,
+                                        height=150,
+                                        border_radius=10,
+                                        ),
+                                    ft.Container(
+                                        content=ft.Text("2", font_family="Boldena", size="32"),
+                                        margin=2,
+                                        padding=2,
+                                        alignment=ft.alignment.center,
+                                        bgcolor="#162127",
+                                        width=220,
+                                        height=150,
+                                        border_radius=10,
+                                        ),
+                                    ft.Container(
+                                        content=ft.Text("3", font_family="Boldena", size="32"),
+                                        margin=2,
+                                        padding=2,
+                                        alignment=ft.alignment.center,
+                                        bgcolor="#162127",
+                                        width=220,
+                                        height=150,
+                                        border_radius=10,
+                                        ),
+                                ]
+                            ),
+                            ft.Column(
+                                [
+                                    ft.Container(
+                                        content=ft.Text("4", font_family="Boldena", size="32"),
+                                        margin=2,
+                                        padding=2,
+                                        alignment=ft.alignment.center,
+                                        bgcolor="#162127",
+                                        width=220,
+                                        height=150,
+                                        border_radius=10,
+                                        ),
+                                    ft.Container(
+                                        content=ft.Text("5", font_family="Boldena", size="32"),
+                                        margin=2,
+                                        padding=2,
+                                        alignment=ft.alignment.center,
+                                        bgcolor="#162127",
+                                        width=220,
+                                        height=150,
+                                        border_radius=10,
+                                        ),
+                                    ft.Container(
+                                        content=ft.Text("6", font_family="Boldena", size="32"),
+                                        margin=2,
+                                        padding=2,
+                                        alignment=ft.alignment.center,
+                                        bgcolor="#162127",
+                                        width=220,
+                                        height=150,
+                                        border_radius=10,
+                                        ),
+                                ],
+                                
+                            ),
+                        ],
+                    )
+                    ], 
+                ),
                 margin=2,
                 padding=2,
                 alignment=ft.alignment.center,
