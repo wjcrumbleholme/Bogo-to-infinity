@@ -30,8 +30,7 @@ def main(page: ft.Page):
     boxPlot = go.Figure()
 
     boxPlot.add_trace(go.Box(
-    x=[0.75, 5.25, 5.5, 6, 6.2, 6.6, 6.80, 7.0, 7.2, 7.5, 7.5, 7.75, 8.15,
-       8.15, 8.65, 8.93, 9.2, 9.5, 10, 10.25, 11.5, 12, 16, 20.90, 22.3, 23.25],
+    x=[],
     name='.',
     boxpoints=False, # no data points
     marker_color='rgb(9,56,125)',
@@ -378,15 +377,24 @@ def main(page: ft.Page):
         return f"{hours}:{minutes}:{seconds}"
 
 
+    def wholeAlikeness(list4):
+        total_alikeness = 0
+        for i in range(0, len(list4) - 1):
+            total_alikeness += abs(list_shuffled[i] - (i+1))
+            total_alikeness += 1
+            return total_alikeness
+
     def makeNewList(length):
         global list_shuffled
         list_shuffled = list(range(1, length + 1))
         shuffle(list_shuffled)  
 
     def sortChecker(list1, currNum):
+        boxPlotList = []
         listSorted = False
         tries = 0
         thisTime = timer()
+        list6 = listLength(currNum)
         while listSorted == False:
             listSorted = True
             for i in range(0, len(list1) - 1):
@@ -400,6 +408,7 @@ def main(page: ft.Page):
             measuredTime = timer()
             currTime = timeDifference(measuredTime, thisTime)
             currTimeText.value = f"Current sort time - {currTime}"
+            updateBoxPlot(list_shuffled,boxPlotList,list6)
             page.update()
         storeInfo(currNum, tries, currTime)
 
@@ -408,6 +417,23 @@ def main(page: ft.Page):
         barGraph.update_traces(go.Bar(
             y=list2,
         ))   
+
+    def listLength(num):
+        list6 = []
+        for i in range(0, num+1):
+            list6.append(i)
+        return list6
+
+
+    def updateBoxPlot(list3,boxPlotList,currlist):
+        boxPlotList.append(wholeAlikeness(list3))
+        boxPlot.update_traces(go.Box(
+            x=boxPlotList,
+            ))
+        boxPlot.update_xaxes(
+            tickvals = currlist,
+            )
+
 
     def updateNoTries(tries):
         triesText.value = f"Number of tries: {tries}"
