@@ -269,6 +269,7 @@ def main(page: ft.Page):
                         ],
                     )
                     ], 
+                    alignment=ft.MainAxisAlignment.CENTER,
                 ),
                 margin=2,
                 padding=2,
