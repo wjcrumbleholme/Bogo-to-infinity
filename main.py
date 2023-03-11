@@ -379,10 +379,11 @@ def main(page: ft.Page):
 
     def wholeAlikeness(list4):
         total_alikeness = 0
-        for i in range(0, len(list4) - 1):
+        for i in range(0, len(list4)):
             total_alikeness += abs(list_shuffled[i] - (i+1))
             total_alikeness += 1
             return total_alikeness
+        
 
     def makeNewList(length):
         global list_shuffled
@@ -413,9 +414,35 @@ def main(page: ft.Page):
         storeInfo(currNum, tries, currTime)
 
     
+    #find the difference between sorted and unsorted list
+    #compare each value in the compared list with the number it is meant to be
+    #if the compared number is zero, the number is in the right place
+    #lower number is closer to the actual number
+    def barColorList(list1):
+        barColorList = []
+        diff_list = []
+        
+        for i in range(0, len(list1)):
+            diff_list.append(abs(list1[i] - (i+1)))
+        
+        for i in range(0, len(diff_list)):
+            if diff_list[i] == 0:
+                barColorList.append("#C5D86D")
+            
+            elif diff_list[i] < (len(diff_list) / 100) * 25:
+                barColorList.append("#FADF7F")
+            elif diff_list[i] < len(diff_list) / 2:
+                barColorList.append("#FCAA67")
+            else: 
+                barColorList.append("#CC444B")
+        return barColorList
+        
+            
+
     def updateBarChart(list2):
         barGraph.update_traces(go.Bar(
             y=list2,
+            marker_color = barColorList(list2),
         ))   
 
     def listLength(num):
@@ -443,7 +470,7 @@ def main(page: ft.Page):
     
     prevResults = ['','','','','','']
     def storeInfo (currNum, tries, currTime):
-        prevResults.insert(0,f"{currNum} values took:\nTries: {tries}\n{currTime}")
+        prevResults.insert(0,f"{currNum} values took:\n{currTime}\nTries: {tries}")
 
     def updatePrevResults():
         box1.value = prevResults[0]
