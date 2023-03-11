@@ -2,10 +2,12 @@ import plotly.graph_objects as go
 from timeit import default_timer as timer
 import flet as ft
 from flet.plotly_chart import PlotlyChart
-import time
+from time import sleep
+from random import shuffle
 
 titleText = ft.Text(f"Bogo to Infinity - 0", font_family="Boldena", size="48")
 elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size="32")
+triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size="32")
 
 def main(page: ft.Page):
 
@@ -58,10 +60,10 @@ def main(page: ft.Page):
     barGraph = go.Figure()
     
     barGraph.add_trace(go.Bar(
-        y=[20, 14, 25, 16, 18, 22, 19, 15, 12, 16, 14, 17],
+        y=[1,2,3],
         name='Primary Product',
-        marker_color='indianred'
-    ))    
+        marker_color='indianred',
+    ))   
     barGraph.update_layout(
         autosize = False,
         width=1500,
@@ -166,7 +168,7 @@ def main(page: ft.Page):
                         border_radius=10,
                     ),
                     ft.Container(
-                        content=ft.Text("Amount of tries - 0", font_family="Boldena", size="32"),
+                        content=triesText,
                         margin=2,
                         padding=2,
                         alignment=ft.alignment.Alignment(-0.9,0),
@@ -331,7 +333,7 @@ def main(page: ft.Page):
     )
 
     startTime = timer()
-    while True:
+    def elapsedTime():
         endTime= timer()
         total = endTime - startTime
         seconds = total % 60
@@ -351,9 +353,45 @@ def main(page: ft.Page):
             hours = int(hours)
         elapsedTimeText.value = f"Total time - {hours}:{minutes}:{seconds}"
         page.update()
-        time.sleep(1)
-        
+
+    def makeNewList(length):
+        global list_shuffled
+        list_shuffled = list(range(1, length + 1))
+        shuffle(list_shuffled)  
+
+    def sortChecker(list1):
+        listSorted = False
+        tries = 0
+        while listSorted == False:
+            listSorted = True
+            for i in range(0, len(list1) - 1):
+                if list1[i+1] < list1[i]:
+                    listSorted = False
+                    tries += 1
+            updateBarChart(list_shuffled)
+            shuffle(list_shuffled)
+            elapsedTime()
+            updateNoTries(tries)
+
     
+    def updateBarChart(list2):
+        barGraph.update_traces(go.Bar(
+            y=list2,
+            name='Primary Product',
+            marker_color='indianred',
+        ))   
+        page.update()
+
+    def updateNoTries(tries):
+        triesText.value = f"Number of tries: {tries}"
+        page.update()
+
+    
+    makeNewList(10)
+    sortChecker(list_shuffled)
+
+
+
 ft.app(target=main)
 
 
