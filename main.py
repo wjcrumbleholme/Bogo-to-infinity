@@ -8,6 +8,7 @@ from random import shuffle
 
 def main(page: ft.Page):
 
+    #settings for the page
     page.title = "Bogo-to-infinity"
     page.window_height = 1024
     page.window_width = 1440
@@ -17,7 +18,7 @@ def main(page: ft.Page):
         'Boldena' : "fonts/BoldenaBold.ttf"
     }
 
-    
+    #all text fields in the page that are changed
     page.titleText = ft.Text(f"Bogo to Infinity - 0", font_family="Boldena", size="48")
     page.elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size="32")
     page.triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size="32")
@@ -29,6 +30,7 @@ def main(page: ft.Page):
     page.box5 = ft.Text("5", font_family="Boldena", size="24")
     page.box6 = ft.Text("6", font_family="Boldena", size="24")
 
+    #create bar chart
     barGraph = go.Figure()
     
     barGraph.add_trace(go.Bar(
@@ -36,6 +38,7 @@ def main(page: ft.Page):
         name='Primary Product',
         marker_color='indianred',
     ))   
+    #bar chart settings
     barGraph.update_layout(
         autosize = False,
         width=1500,
@@ -65,12 +68,14 @@ def main(page: ft.Page):
         showticklabels = False,
     )
 
+    #used for updating the bar chart
     page.barGraphDisplay = PlotlyChart(barGraph,expand=True)
 
-
+    #left side
     def left_column(align: ft.CrossAxisAlignment):
         return ft.Column (
             [
+            #title
             ft.Container(
                 content=page.titleText,
                 margin=2,
@@ -81,6 +86,7 @@ def main(page: ft.Page):
                 height=83,
                 border_radius=10,
             ),
+            #bar chart
             ft.Container(
                 content = 
                     ft.Container(
@@ -104,6 +110,7 @@ def main(page: ft.Page):
             ]
         )
     
+    #right side
     def right_column(align: ft.CrossAxisAlignment):
         return ft.Column(
             [
@@ -111,6 +118,7 @@ def main(page: ft.Page):
                 content=
                 ft.Column (
                     [
+                    #current time box
                     ft.Container(
                         content=page.currTimeText,
                         margin=2,
@@ -121,6 +129,7 @@ def main(page: ft.Page):
                         height=83,
                         border_radius=10,
                     ),
+                    #no of tries box
                     ft.Container(
                         content=page.triesText,
                         margin=2,
@@ -131,6 +140,7 @@ def main(page: ft.Page):
                         height=83,
                         border_radius=10,
                     ),
+                    #elapsed time box
                     ft.Container(
                         content=page.elapsedTimeText,
                         margin=2,
@@ -158,6 +168,7 @@ def main(page: ft.Page):
                     [
                     ft.Row(
                         [
+                        #prev values box
                         ft.Container(
                         content=ft.Text("Previous values", font_family="Boldena", size="60"),
                         margin=2,
@@ -173,6 +184,7 @@ def main(page: ft.Page):
                     ),
                     ft.Row(
                         [
+                        #divider
                         ft.Container(
                             margin=2,
                             padding=2,
@@ -187,8 +199,10 @@ def main(page: ft.Page):
                     ),
                     ft.Row(
                         [
+                        #left column of prev values
                         ft.Column(
                                 [
+                                    #box1
                                     ft.Container(
                                         content=page.box1,
                                         margin=2,
@@ -199,6 +213,7 @@ def main(page: ft.Page):
                                         height=150,
                                         border_radius=10,
                                         ),
+                                    #box3
                                     ft.Container(
                                         content=page.box3,
                                         margin=2,
@@ -209,6 +224,7 @@ def main(page: ft.Page):
                                         height=150,
                                         border_radius=10,
                                         ),
+                                    #box5
                                     ft.Container(
                                         content=page.box5,
                                         margin=2,
@@ -221,8 +237,10 @@ def main(page: ft.Page):
                                         ),
                                 ]
                             ),
+                        #right column of prev values
                         ft.Column(
                                 [
+                                    #box2
                                     ft.Container(
                                         content=page.box2,
                                         margin=2,
@@ -233,6 +251,7 @@ def main(page: ft.Page):
                                         height=150,
                                         border_radius=10,
                                         ),
+                                    #box4
                                     ft.Container(
                                         content=page.box4,
                                         margin=2,
@@ -243,6 +262,7 @@ def main(page: ft.Page):
                                         height=150,
                                         border_radius=10,
                                         ),
+                                    #box6
                                     ft.Container(
                                         content=page.box6,
                                         margin=2,
@@ -272,7 +292,7 @@ def main(page: ft.Page):
             ),
             ],
         )
-
+    #add all elements to the screen
     page.add(
         ft.Row(
         [
@@ -287,6 +307,7 @@ def main(page: ft.Page):
     )
 
     startTime = timer()
+    #calculates the total time
     def elapsedTime():
         endTime= timer()
         total = endTime - startTime
@@ -308,6 +329,7 @@ def main(page: ft.Page):
         page.elapsedTimeText.value = f"Total time - {hours}:{minutes}:{seconds}"
         page.elapsedTimeText.update()
 
+    #calculates the time difference between 2 values
     def timeDifference(time1, time2):
         total = time1 - time2
         seconds = total % 60
@@ -327,7 +349,7 @@ def main(page: ft.Page):
             hours = int(hours)
         return f"{hours}:{minutes}:{seconds}"
 
-
+    #finds how close the shuffled list is to the sorted list (if 0 was returned the list would be sorted and any other number is how close the list is to be sorted)
     def wholeAlikeness(list4):
         total_alikeness = 0
         for i in range(0, len(list4)):
@@ -335,12 +357,14 @@ def main(page: ft.Page):
             total_alikeness += 1
             return total_alikeness
         
-
+    #takes in a length and makes a new list from 1 - length
     def makeNewList(length):
         global list_shuffled
         list_shuffled = list(range(1, length + 1))
         shuffle(list_shuffled)  
 
+    #checks if the list is sorted and if it is not, shuffles it again. 
+    #also handles updating all of the display elements except prev values
     def sortChecker(list1, currNum):
         listSorted = False
         tries = 0
@@ -355,7 +379,8 @@ def main(page: ft.Page):
             updateNoTries(tries)
             measuredTime = timer()
             currTime = timeDifference(measuredTime, thisTime)
-                
+
+            #runs every 10 tries to speed the program up from updating the display elements to quickly    
             if tries % 10 == 0:
                 page.currTimeText.value = f"Current sort time - {currTime}"
                 page.currTimeText.update()
@@ -369,8 +394,10 @@ def main(page: ft.Page):
     
     #find the difference between sorted and unsorted list
     #compare each value in the compared list with the number it is meant to be
-    #if the compared number is zero, the number is in the right place
-    #lower number is closer to the actual number
+    #if the compared number is zero, the number is in the right place and is coloured green
+    #if compared number is within 25% range of the actual value it is coloured yellow
+    #if compared number is within half the range of the actual value it is coloured orange
+    #else number is coloured red
     def barColorList(list1):
         barColorList = []
         diff_list = []
@@ -391,26 +418,29 @@ def main(page: ft.Page):
         return barColorList
         
             
-
+    #updates the bar graph and colours it
     def updateBarChart(list2,tries):
         barGraph.update_traces(go.Bar(
             y=list2,
             marker_color = barColorList(list2),
         ))
 
-
+    #updates the no of tries element
     def updateNoTries(tries):
         page.triesText.value = f"Number of tries: {tries}"
         page.triesText.update()
 
+    #updates the title with the current number of values in the list it is sorting
     def updateTitleText(num):
         page.titleText.value = f"Bogo Sort - {num}"
         page.titleText.update()
     
+    #after a successful sort, it is stored in a list with the number of values in the list, the list sort time and the number of tries
     prevResults = ['','','','','','']
     def storeInfo (currNum, tries, currTime):
         prevResults.insert(0,f"{currNum} values took:\n{currTime}\nTries: {tries}")
 
+    #updates all the previous values boxes with the prev results stored in prevResults
     def updatePrevResults():
         page.box1.value = prevResults[0]
         page.box2.value = prevResults[1]
@@ -420,7 +450,7 @@ def main(page: ft.Page):
         page.box6.value = prevResults[5]
         page.update()
 
-
+    #Responsible for making incrementing the number of values in the list, checking wether the list is sorted and updating the prev values and title text
     for i in range(2, 100):
         makeNewList(i)
         updateTitleText(i)
