@@ -51,7 +51,7 @@ def sortChecker(list1):
         print (tries)
 
 
-current_list_length = 15
+current_list_length = 6
 makeNewList(current_list_length)
 t1 = time.time()
 sortChecker(list_shuffled)

@@ -5,61 +5,29 @@ from flet.plotly_chart import PlotlyChart
 from time import sleep
 from random import shuffle
 
-titleText = ft.Text(f"Bogo to Infinity - 0", font_family="Boldena", size="48")
-elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size="32")
-triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size="32")
-currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size="32")
-box1 = ft.Text("1", font_family="Boldena", size="24")
-box2 = ft.Text("2", font_family="Boldena", size="24")
-box3 = ft.Text("3", font_family="Boldena", size="24")
-box4 = ft.Text("4", font_family="Boldena", size="24")
-box5 = ft.Text("5", font_family="Boldena", size="24")
-box6 = ft.Text("6", font_family="Boldena", size="24")
 
 def main(page: ft.Page):
 
     page.title = "Bogo-to-infinity"
     page.window_height = 1024
     page.window_width = 1440
-    page.window_resizable = False
+    page.window_resizable = True
     page.bgcolor="#BECEDA"
     page.fonts = {
         'Boldena' : "fonts/BoldenaBold.ttf"
     }
 
-    boxPlot = go.Figure()
-
-    boxPlot.add_trace(go.Box(
-    x=[],
-    name='.',
-    boxpoints=False, # no data points
-    marker_color='rgb(9,56,125)',
-    line_color='rgb(9,56,125)',
-    ))
-
-    boxPlot.update_layout(
-        autosize = False,
-        width=1500,
-        height=600,
-        margin=dict(
-            l=0,
-            r=0,
-            b=0,
-            t=0,
-            pad=1
-        ),
-        xaxis = dict(
-        tickfont = dict(size=20)),
-        paper_bgcolor="rgba(0,0,0,0)",
-        xaxis_color="#FFFFFF",
-        plot_bgcolor='rgba(0,0,0,0)',
-    )
-    boxPlot.update_xaxes(
-        showline = True,
-        linecolor = "White",
-        gridcolor = 'White',
-        gridwidth = 2,
-    )
+    
+    page.titleText = ft.Text(f"Bogo to Infinity - 0", font_family="Boldena", size="48")
+    page.elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size="32")
+    page.triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size="32")
+    page.currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size="32")
+    page.box1 = ft.Text("1", font_family="Boldena", size="24")
+    page.box2 = ft.Text("2", font_family="Boldena", size="24")
+    page.box3 = ft.Text("3", font_family="Boldena", size="24")
+    page.box4 = ft.Text("4", font_family="Boldena", size="24")
+    page.box5 = ft.Text("5", font_family="Boldena", size="24")
+    page.box6 = ft.Text("6", font_family="Boldena", size="24")
 
     barGraph = go.Figure()
     
@@ -97,12 +65,14 @@ def main(page: ft.Page):
         showticklabels = False,
     )
 
+    page.barGraphDisplay = PlotlyChart(barGraph,expand=True)
+
 
     def left_column(align: ft.CrossAxisAlignment):
         return ft.Column (
             [
             ft.Container(
-                content=titleText,
+                content=page.titleText,
                 margin=2,
                 padding=2,
                 alignment=ft.alignment.Alignment(-0.9,0),
@@ -114,7 +84,7 @@ def main(page: ft.Page):
             ft.Container(
                 content = 
                     ft.Container(
-                    content=PlotlyChart(barGraph,expand=True),
+                    content=page.barGraphDisplay,
                     margin=2,
                     padding=10,
                     alignment=ft.alignment.center,
@@ -131,26 +101,6 @@ def main(page: ft.Page):
                 height=526,
                 border_radius=10,
             ),
-            ft.Container(
-                content =
-                ft.Container(
-                    content=PlotlyChart(boxPlot,expand=True),
-                    margin=2,
-                    padding=5,
-                    alignment=ft.alignment.center,
-                    bgcolor="#89A8BD",
-                    width=850,
-                    height=295,
-                    border_radius=10,
-                ),
-                margin=2,
-                padding=10,
-                alignment=ft.alignment.center,
-                bgcolor="#426276",
-                width=875,
-                height=320,
-                border_radius=10,
-            ),
             ]
         )
     
@@ -162,7 +112,7 @@ def main(page: ft.Page):
                 ft.Column (
                     [
                     ft.Container(
-                        content=currTimeText,
+                        content=page.currTimeText,
                         margin=2,
                         padding=2,
                         alignment=ft.alignment.Alignment(-0.9,0),
@@ -172,7 +122,7 @@ def main(page: ft.Page):
                         border_radius=10,
                     ),
                     ft.Container(
-                        content=triesText,
+                        content=page.triesText,
                         margin=2,
                         padding=2,
                         alignment=ft.alignment.Alignment(-0.9,0),
@@ -182,7 +132,7 @@ def main(page: ft.Page):
                         border_radius=10,
                     ),
                     ft.Container(
-                        content=elapsedTimeText,
+                        content=page.elapsedTimeText,
                         margin=2,
                         padding=2,
                         alignment=ft.alignment.Alignment(-0.9,0),
@@ -240,7 +190,7 @@ def main(page: ft.Page):
                         ft.Column(
                                 [
                                     ft.Container(
-                                        content=box1,
+                                        content=page.box1,
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
@@ -250,7 +200,7 @@ def main(page: ft.Page):
                                         border_radius=10,
                                         ),
                                     ft.Container(
-                                        content=box3,
+                                        content=page.box3,
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
@@ -260,7 +210,7 @@ def main(page: ft.Page):
                                         border_radius=10,
                                         ),
                                     ft.Container(
-                                        content=box5,
+                                        content=page.box5,
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
@@ -274,7 +224,7 @@ def main(page: ft.Page):
                         ft.Column(
                                 [
                                     ft.Container(
-                                        content=box2,
+                                        content=page.box2,
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
@@ -284,7 +234,7 @@ def main(page: ft.Page):
                                         border_radius=10,
                                         ),
                                     ft.Container(
-                                        content=box4,
+                                        content=page.box4,
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
@@ -294,7 +244,7 @@ def main(page: ft.Page):
                                         border_radius=10,
                                         ),
                                     ft.Container(
-                                        content=box6,
+                                        content=page.box6,
                                         margin=2,
                                         padding=2,
                                         alignment=ft.alignment.center,
@@ -355,7 +305,8 @@ def main(page: ft.Page):
             hours = f"0{int(hours)}"
         else:
             hours = int(hours)
-        elapsedTimeText.value = f"Total time - {hours}:{minutes}:{seconds}"
+        page.elapsedTimeText.value = f"Total time - {hours}:{minutes}:{seconds}"
+        page.elapsedTimeText.update()
 
     def timeDifference(time1, time2):
         total = time1 - time2
@@ -391,26 +342,28 @@ def main(page: ft.Page):
         shuffle(list_shuffled)  
 
     def sortChecker(list1, currNum):
-        boxPlotList = []
         listSorted = False
         tries = 0
         thisTime = timer()
-        list6 = listLength(currNum)
         while listSorted == False:
             listSorted = True
             for i in range(0, len(list1) - 1):
                 if list1[i+1] < list1[i]:
                     listSorted = False
             tries += 1
-            updateBarChart(list_shuffled)
             shuffle(list_shuffled)
-            elapsedTime()
             updateNoTries(tries)
             measuredTime = timer()
             currTime = timeDifference(measuredTime, thisTime)
-            currTimeText.value = f"Current sort time - {currTime}"
-            updateBoxPlot(list_shuffled,boxPlotList,list6)
-            page.update()
+                
+            if tries % 10 == 0:
+                page.currTimeText.value = f"Current sort time - {currTime}"
+                page.currTimeText.update()
+                updateBarChart(list_shuffled,tries)
+                page.barGraphDisplay.update()
+                elapsedTime()
+            else:
+                pass
         storeInfo(currNum, tries, currTime)
 
     
@@ -439,46 +392,32 @@ def main(page: ft.Page):
         
             
 
-    def updateBarChart(list2):
+    def updateBarChart(list2,tries):
         barGraph.update_traces(go.Bar(
             y=list2,
             marker_color = barColorList(list2),
-        ))   
-
-    def listLength(num):
-        list6 = []
-        for i in range(0, num+1):
-            list6.append(i)
-        return list6
-
-
-    def updateBoxPlot(list3,boxPlotList,currlist):
-        boxPlotList.append(wholeAlikeness(list3))
-        boxPlot.update_traces(go.Box(
-            x=boxPlotList,
-            ))
-        boxPlot.update_xaxes(
-            tickvals = currlist,
-            )
+        ))
 
 
     def updateNoTries(tries):
-        triesText.value = f"Number of tries: {tries}"
+        page.triesText.value = f"Number of tries: {tries}"
+        page.triesText.update()
 
     def updateTitleText(num):
-        titleText.value = f"Bogo Sort - {num}"
+        page.titleText.value = f"Bogo Sort - {num}"
+        page.titleText.update()
     
     prevResults = ['','','','','','']
     def storeInfo (currNum, tries, currTime):
         prevResults.insert(0,f"{currNum} values took:\n{currTime}\nTries: {tries}")
 
     def updatePrevResults():
-        box1.value = prevResults[0]
-        box2.value = prevResults[1]
-        box3.value = prevResults[2]
-        box4.value = prevResults[3]
-        box5.value = prevResults[4]
-        box6.value = prevResults[5]
+        page.box1.value = prevResults[0]
+        page.box2.value = prevResults[1]
+        page.box3.value = prevResults[2]
+        page.box4.value = prevResults[3]
+        page.box5.value = prevResults[4]
+        page.box6.value = prevResults[5]
         page.update()
 
 
@@ -488,11 +427,8 @@ def main(page: ft.Page):
         sortChecker(list_shuffled, i)
         updatePrevResults()
     
-
-
-
-
 ft.app(target=main)
+# ft.app(target=main,port=8550,view=ft.WEB_BROWSER)
 
 
     
