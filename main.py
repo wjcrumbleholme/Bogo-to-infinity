@@ -6,22 +6,27 @@ from time import sleep
 from random import shuffle
 
 
-windowY = 720
-windowX = 1280
-aspectY = 900
-aspectX = 1600
-textRatio = ((windowX * windowY) / (aspectX * aspectY))
+
 
 def main(page: ft.Page):
     page.light = ["#162127","#426276","#89A8BD","#BECEDA", "#2A2D34"]
     page.dark = ["#2A2D34", "#4A5F82", "#405763", "#2A2D34", "#FFFFFF"]
     page.colSchem = page.light
 
+    page.windowY = 954
+    page.windowX = 1672
+    page.aspectY = 900
+    page.aspectX = 1600
+    page.textRatio = ((page.windowX * page.windowY) / (page.aspectX * page.aspectY))
+
+
     #settings for the page
     page.title = "Bogo-to-infinity"
-    page.window_height = windowY
-    page.window_width = windowX
+    page.window_height = page.windowY
+    page.window_width = page.windowX
     page.window_resizable = True
+    page.window_maximized = True
+    page.window_full_screen = True
     page.bgcolor=page.colSchem[3]
     page.fonts = {
         'Boldena' : "/fonts/BoldenaBold.ttf"
@@ -36,7 +41,6 @@ def main(page: ft.Page):
         page.darkButton.tooltip = "Toggle Light Mode"
         
         page.colSchem = page.dark
-        
         updateColors()
         
     def toggleLightMode(e):
@@ -78,6 +82,9 @@ def main(page: ft.Page):
         page.box4.color = page.colSchem[4]
         page.box5.color = page.colSchem[4]
         page.box6.color = page.colSchem[4]
+        page.darkButtonContainer.bgcolor = page.colSchem[2]
+        page.keyContainer.bgcolor = page.colSchem[2]
+        page.keyText.color = page.colSchem[4]
         page.update()
 
     #----BAR CHART----#
@@ -92,8 +99,8 @@ def main(page: ft.Page):
     #bar chart settings
     barGraph.update_layout(
         autosize = True,
-        # width= aspectX * 100,
-        # height= aspectY * 100,
+        # width= page.aspectX * 100,
+        # height= page.aspectY * 100,
         margin=dict(
             l=0,
             r=0,
@@ -122,49 +129,72 @@ def main(page: ft.Page):
     #----ALL ELEMENTS ON THE SCREEN---#
 
     page.barGraphDisplay = PlotlyChart(barGraph,expand=True)
-    page.titleText = ft.Text(f"Bogo to Infinity - 0", font_family = "Boldena", size= textRatio * 60, color= page.colSchem[4])
-    page.elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.prevValuesText = ft.Text("Previous values", font_family="Boldena", size= textRatio * 60, color= page.colSchem[4])
-    page.box1 = ft.Text("1", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.box2 = ft.Text("2", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.box3 = ft.Text("3", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.box4 = ft.Text("4", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.box5 = ft.Text("5", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
-    page.box6 = ft.Text("6", font_family="Boldena", size= textRatio * 32, color= page.colSchem[4])
+    page.titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena", size= page.textRatio * 50, color= page.colSchem[4])
+    page.keyText = ft.Text("<50% Correct = Red, <75% Correct = Orange \n>75% Correct = Yellow, 100% Correct = Green", font_family= "Boldena", size= page.textRatio * 16, color = page.colSchem[4])
+    page.elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.prevValuesText = ft.Text("Previous values", font_family="Boldena", size= page.textRatio * 50, color= page.colSchem[4])
+    page.box1 = ft.Text("1", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.box2 = ft.Text("2", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.box3 = ft.Text("3", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.box4 = ft.Text("4", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.box5 = ft.Text("5", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.box6 = ft.Text("6", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
     page.darkButton = ft.IconButton(
             icon=ft.icons.DARK_MODE,
             icon_color="#232528",
             selected_icon_color='#FFFFFF',
-            icon_size=textRatio * 60,
+            icon_size=page.textRatio * 40,
             tooltip="Toggle Dark Mode",
             on_click=toggleDarkMode,
         )
+    page.darkButtonContainer = ft.Container(
+            content= page.darkButton,
+            margin=2,
+            padding=2,
+            alignment=ft.alignment.center,
+            bgcolor=page.colSchem[2],
+            width= page.windowX/page.aspectX * 83,
+            height= page.windowY/page.aspectY * 83,
+            border_radius=10,
+        )
+    page.keyContainer = ft.Container(
+            content= page.keyText,
+                margin=2,
+                padding=2,
+                alignment=ft.alignment.center,
+                bgcolor=page.colSchem[2],
+                width= page.windowX/page.aspectX * 500,
+                height= page.windowY/page.aspectY * 83,
+                border_radius=10,
+        )
     page.titleContainer = ft.Container(
-            content=
-            ft.Row([
-                page.titleText,
-                page.darkButton,
-            ],
-            spacing = 15,
-            ),
+            content= page.titleText,
             margin=2,
             padding=2,
             alignment=ft.alignment.Alignment(-0.9,0),
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 500,
-            height= windowY/aspectY * 83,
+            width= page.windowX/page.aspectX * 500,
+            height= page.windowY/page.aspectY * 83,
             border_radius=10,
         )
+    page.topLeftContainer = ft.Row(
+        [
+        page.titleContainer,
+        page.darkButtonContainer,
+        page.keyContainer,
+        ],
+        spacing= 15
+    )
     page.barGraphContainerInner = ft.Container(
             content=page.barGraphDisplay,
             margin=2,
             padding=10,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 1103,
-            height= windowY/aspectY * 841,
+            width= page.windowX/page.aspectX * 1103,
+            height= page.windowY/page.aspectY * 841,
             border_radius=10,
         )
     page.barGraphContainerOuter = ft.Container(
@@ -173,8 +203,8 @@ def main(page: ft.Page):
             padding=10,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[1],
-            width= windowX/aspectX * 1136,
-            height= windowY/aspectY * 891,
+            width= page.windowX/page.aspectX * 1136,
+            height= page.windowY/page.aspectY * 891,
             border_radius=10,
         )
     page.currTimeContainer = ft.Container(
@@ -183,8 +213,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.Alignment(-0.9,0),
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 594,
-            height= windowY/aspectY * 83,
+            width= page.windowX/page.aspectX * 594,
+            height= page.windowY/page.aspectY * 83,
             border_radius=10,
         )
     page.noTriesContainer = ft.Container(
@@ -193,8 +223,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.Alignment(-0.9,0),
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 594,
-            height= windowY/aspectY * 83,
+            width= page.windowX/page.aspectX * 594,
+            height= page.windowY/page.aspectY * 83,
             border_radius=10,
         )
     page.elapsedTimeContainer = ft.Container(
@@ -203,8 +233,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.Alignment(-0.9,0),
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 594,
-            height= windowY/aspectY * 83,
+            width= page.windowX/page.aspectX * 594,
+            height= page.windowY/page.aspectY * 83,
             border_radius=10,
         )
     page.rightTopContainer = ft.Container(
@@ -224,8 +254,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[1],
-            width= windowX/aspectX * 660,
-            height= windowY/aspectY * 313,
+            width= page.windowX/page.aspectX * 660,
+            height= page.windowY/page.aspectY * 313,
             border_radius=10,
         )
     page.prevValuesContainer = ft.Container(
@@ -234,8 +264,8 @@ def main(page: ft.Page):
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=page.colSchem[2],
-        width= windowX/aspectX * 450,
-        height= windowY/aspectY * 100,
+        width= page.windowX/page.aspectX * 450,
+        height= page.windowY/page.aspectY * 100,
         border_radius=10,
         )
     page.dividerContainer = ft.Container(
@@ -243,8 +273,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[0],
-            width= windowX/aspectX * 595,
-            height= windowY/aspectY * 5,
+            width= page.windowX/page.aspectX * 595,
+            height= page.windowY/page.aspectY * 5,
             border_radius=10,
         )
     page.box1Container = ft.Container(
@@ -253,8 +283,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 290,
-            height= windowY/aspectY * 150,
+            width= page.windowX/page.aspectX * 290,
+            height= page.windowY/page.aspectY * 150,
             border_radius=10,
         )
     page.box3Container = ft.Container(
@@ -263,8 +293,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 290,
-            height= windowY/aspectY * 150,
+            width= page.windowX/page.aspectX * 290,
+            height= page.windowY/page.aspectY * 150,
             border_radius=10,
         )
     page.box5Container = ft.Container(
@@ -273,8 +303,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 290,
-            height= windowY/aspectY * 150,
+            width= page.windowX/page.aspectX * 290,
+            height= page.windowY/page.aspectY * 150,
             border_radius=10,
         )
     page.box2Container = ft.Container(
@@ -283,8 +313,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 290,
-            height= windowY/aspectY * 150,
+            width= page.windowX/page.aspectX * 290,
+            height= page.windowY/page.aspectY * 150,
             border_radius=10,
         )
     page.box4Container = ft.Container(
@@ -293,8 +323,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 290,
-            height= windowY/aspectY * 150,
+            width= page.windowX/page.aspectX * 290,
+            height= page.windowY/page.aspectY * 150,
             border_radius=10,
         )
     page.box6Container = ft.Container(
@@ -303,8 +333,8 @@ def main(page: ft.Page):
             padding=2,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[2],
-            width= windowX/aspectX * 290,
-            height= windowY/aspectY * 150,
+            width= page.windowX/page.aspectX * 290,
+            height= page.windowY/page.aspectY * 150,
             border_radius=10,
         )
     page.bottomRightContainer = ft.Container(
@@ -351,8 +381,8 @@ def main(page: ft.Page):
             padding=10,
             alignment=ft.alignment.center,
             bgcolor=page.colSchem[1],
-            width= windowX/aspectX * 660,
-            height= windowY/aspectY * 661,
+            width= page.windowX/page.aspectX * 660,
+            height= page.windowY/page.aspectY * 661,
             border_radius=10,
         )
 
@@ -363,7 +393,7 @@ def main(page: ft.Page):
         return ft.Column (
             [
             #title
-            page.titleContainer,
+            page.topLeftContainer,
             #bar chart
             page.barGraphContainerOuter,
             ]
@@ -529,7 +559,7 @@ def main(page: ft.Page):
         page.update()
 
     #----INITIALIZATION AND MAIN LOOP LOGIC----#
-    
+
     #takes in a length and makes a new list from 1 - length
     def makeNewList(length):
         global list_shuffled
