@@ -7,623 +7,493 @@ from random import shuffle
 import os
 
 
-def bogo(page: ft.Page):
 
-    #----COLORS----#
-    # FORMAT: [Divider color, Container border color, Container color, Background color,  Text color, Far bar, Medium bar, Close bar, Actual bar]
-    page.light = ["#BDCDD6","#6096B4","#93BFCF","#BDCDD6", "#2C3333", "#FF6363", "#FFAB76", "#FFFDA2", "#BAFFB4"]
-    page.dark = ["#2C3333", "#2E4F4F", "#0E8388", "#2C3333", "#CBE4DE", "#37306B", "#66347F", "#9E4784", "#D27685"]
-    page.colSchem = page.light
+#----COLORS----#
+# FORMAT: [Divider color, Container border color, Container color, Background color,  Text color, Far bar, Medium bar, Close bar, Actual bar]
+light = ["#BDCDD6","#6096B4","#93BFCF","#BDCDD6", "#2C3333", "#FF6363", "#FFAB76", "#FFFDA2", "#BAFFB4"]
+dark = ["#2C3333", "#2E4F4F", "#0E8388", "#2C3333", "#CBE4DE", "#37306B", "#66347F", "#9E4784", "#D27685"]
+colSchem = light
 
-    page.windowY = 954
-    page.windowX = 1672
-    page.aspectY = 900
-    page.aspectX = 1600
-    page.textRatio = ((page.windowX * page.windowY) / (page.aspectX * page.aspectY))
+windowY = 954
+windowX = 1672
+aspectY = 900
+aspectX = 1600
+textRatio = ((windowX * windowY) / (aspectX * aspectY))
 
 
-    #settings for the page
-    page.title = "Bogo-to-infinity"
-    page.window_height = page.windowY
-    page.window_width = page.windowX
-    page.window_resizable = True
-    page.window_maximized = True
-    page.window_full_screen = True
-    page.bgcolor=page.colSchem[3]
-    page.fonts = {
-        'Boldena' : "/fonts/BoldenaBold.ttf"
-    }
+#settings for the     title = "Bogo-to-infinity"
+window_height = windowY
+window_width = windowX
+window_resizable = True
+window_maximized = True
+window_full_screen = True
+bgcolor=colSchem[3]
+fonts = {
+    'Boldena' : "/fonts/BoldenaBold.ttf"
+}
 
-    #----DARK MODE AND THEMES----#    
+#----DARK MODE AND THEMES----#    
 
-    def toggleDarkMode(e):
-        page.darkButton.on_click = toggleLightMode
-        page.darkButton.icon = ft.icons.LIGHT_MODE
-        page.darkButton.icon_color = "#FFFFFF"
-        page.darkButton.tooltip = "Toggle Light Mode"
-        
-        page.colSchem = page.dark
-        updateColors()
-        
-    def toggleLightMode(e):
-        page.darkButton.on_click = toggleDarkMode
-        page.darkButton.icon=ft.icons.DARK_MODE
-        page.darkButton.icon_color="#232528"
-        page.darkButton.tooltip = "Toggle Dark Mode"
-
-        page.colSchem = page.light
-        updateColors()
-
-    def closeApp(e):
-        os._exit(1)
-
-    #This is utterly stupid and dumb
-    def updateColors():
-        page.bgcolor = page.colSchem[3]
-        page.titleContainer.bgcolor = page.colSchem[2]
-        page.barGraphContainerOuter.bgcolor = page.colSchem[1]
-        page.barGraphContainerInner.bgcolor = page.colSchem[2]
-        page.currTimeContainer.bgcolor = page.colSchem[2]
-        page.noTriesContainer.bgcolor = page.colSchem[2]
-        page.elapsedTimeContainer.bgcolor = page.colSchem[2]
-        page.rightTopContainer.bgcolor = page.colSchem[1]
-        page.prevValuesContainer.bgcolor = page.colSchem[2]
-        page.dividerContainer.bgcolor = page.colSchem[0]
-        page.box1Container.bgcolor = page.colSchem[2]
-        page.box3Container.bgcolor = page.colSchem[2]
-        page.box5Container.bgcolor = page.colSchem[2]
-        page.box2Container.bgcolor = page.colSchem[2]
-        page.box4Container.bgcolor = page.colSchem[2]
-        page.box6Container.bgcolor = page.colSchem[2]
-        page.bottomRightContainer.bgcolor = page.colSchem[1]
-        page.titleText.color = page.colSchem[4]
-        page.elapsedTimeText.color = page.colSchem[4]
-        page.triesText.color = page.colSchem[4]
-        page.currTimeText.color = page.colSchem[4]
-        page.prevValuesText.color = page.colSchem[4]
-        page.box1.color = page.colSchem[4]
-        page.box2.color = page.colSchem[4]
-        page.box3.color = page.colSchem[4]
-        page.box4.color = page.colSchem[4]
-        page.box5.color = page.colSchem[4]
-        page.box6.color = page.colSchem[4]
-        page.darkButtonContainer.bgcolor = page.colSchem[2]
-        page.exitButtonContainer.bgcolor = page.colSchem[2]
-        page.keyContainer.bgcolor = page.colSchem[2]
-        page.correctText.color = page.colSchem[8]
-        page.closeText.color = page.colSchem[7]
-        page.mediumText.color = page.colSchem[6]
-        page.farText.color = page.colSchem[5]
-        page.update()
-
-    #----BAR CHART----#
-
-    barGraph = go.Figure()
+def toggleDarkMode(e):
+    darkButton.on_click = toggleLightMode
+    darkButton.icon = ft.icons.LIGHT_MODE
+    darkButton.icon_color = "#FFFFFF"
+    darkButton.tooltip = "Toggle Light Mode"
     
-    barGraph.add_trace(go.Bar(
-        y=[1,2,3],
-        name='Primary Product',
-        marker_color='indianred',
-    ))   
-    #bar chart settings
-    barGraph.update_layout(
-        autosize = True,
-        # width= page.aspectX * 100,
-        # height= page.aspectY * 100,
-        margin=dict(
-            l=0,
-            r=0,
-            b=0,
-            t=0,
-            pad=1
-        ),
-        xaxis = dict(
-        tickfont = dict(size=20)),
-        paper_bgcolor="rgba(0,0,0,0)",
-        xaxis_color="#FFFFFF",
-        plot_bgcolor='rgba(0,0,0,0)',
-        bargap = 0,
-    )
-    barGraph.update_xaxes(
-        showline = True,
-        linecolor = "White",
-        visible = False,
-    )
-    barGraph.update_yaxes(
-        showline = False,
-        showgrid = False,
-        showticklabels = False,
-    )
+    colSchem = dark
+    updateColors()
+    
+def toggleLightMode(e):
+    darkButton.on_click = toggleDarkMode
+    darkButton.icon=ft.icons.DARK_MODE
+    darkButton.icon_color="#232528"
+    darkButton.tooltip = "Toggle Dark Mode"
 
-    #----ALL ELEMENTS ON THE SCREEN---#
+    colSchem = light
+    updateColors()
 
-    page.barGraphDisplay = PlotlyChart(barGraph,expand=True)
-    page.titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena", size= page.textRatio * 50, color= page.colSchem[4])
-    page.elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.prevValuesText = ft.Text("Previous values", font_family="Boldena", size= page.textRatio * 50, color= page.colSchem[4])
-    page.box1 = ft.Text("1", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.box2 = ft.Text("2", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.box3 = ft.Text("3", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.box4 = ft.Text("4", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.box5 = ft.Text("5", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.box6 = ft.Text("6", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
-    page.correctText = ft.Text("100% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[8])
-    page.closeText = ft.Text(">75% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[7])
-    page.mediumText = ft.Text("<75% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[6])
-    page.farText = ft.Text("<50% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[5])
-    page.darkButton = ft.IconButton(
-            icon=ft.icons.DARK_MODE,
-            icon_color="#232528",
-            selected_icon_color='#FFFFFF',
-            icon_size=page.textRatio * 40,
-            tooltip="Toggle Dark Mode",
-            on_click=toggleDarkMode,
-        )
-    page.exitButton = ft.IconButton(
-            icon=ft.icons.EXIT_TO_APP,
-            icon_color="red",
-            selected_icon_color='#FFFFFF',
-            icon_size=page.textRatio * 40,
-            tooltip="Exit",
-            on_click=closeApp,
-        )
-    page.darkButtonContainer = ft.Container(
-            content= page.darkButton,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 83,
-            height= page.windowY/page.aspectY * 83,
-            border_radius=10,
-        )
-    page.exitButtonContainer = ft.Container(
-            content= page.exitButton,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 83,
-            height= page.windowY/page.aspectY * 83,
-            border_radius=10,
-        )
-    page.keyContainer = ft.Container(
-            content= 
-            ft.Row([
-                ft.Column([
-                    page.correctText,
-                    page.mediumText,
-                ],
-                spacing = 1,
-                alignment=ft.MainAxisAlignment.CENTER,
-                ),
-                ft.Column([
-                    page.closeText,
-                    page.farText,
-                ],
-                spacing = 1,
-                alignment=ft.MainAxisAlignment.CENTER,
-                ),
-            ],
-            alignment=ft.MainAxisAlignment.CENTER,
-            ),
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 350,
-            height= page.windowY/page.aspectY * 83,
-            border_radius=10,
-        )
-    page.titleContainer = ft.Container(
-            content= page.titleText,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.Alignment(-0.9,0),
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 500,
-            height= page.windowY/page.aspectY * 83,
-            border_radius=10,
-        )
-    page.topLeftContainer = ft.Row(
-        [
-        
-        page.titleContainer,
-        page.keyContainer,
-        page.darkButtonContainer,
-        page.exitButtonContainer,
-        
-        ],
-        spacing= 15
+def closeApp(e):
+    os._exit(1)
+
+#This is utterly stupid and dumb
+def updateColors():
+    bgcolor = colSchem[3]
+    titleContainer.bgcolor = colSchem[2]
+    barGraphContainerOuter.bgcolor = colSchem[1]
+    barGraphContainerInner.bgcolor = colSchem[2]
+    currTimeContainer.bgcolor = colSchem[2]
+    noTriesContainer.bgcolor = colSchem[2]
+    elapsedTimeContainer.bgcolor = colSchem[2]
+    rightTopContainer.bgcolor = colSchem[1]
+    prevValuesContainer.bgcolor = colSchem[2]
+    dividerContainer.bgcolor = colSchem[0]
+    box1Container.bgcolor = colSchem[2]
+    box3Container.bgcolor = colSchem[2]
+    box5Container.bgcolor = colSchem[2]
+    box2Container.bgcolor = colSchem[2]
+    box4Container.bgcolor = colSchem[2]
+    box6Container.bgcolor = colSchem[2]
+    bottomRightContainer.bgcolor = colSchem[1]
+    titleText.color = colSchem[4]
+    elapsedTimeText.color = colSchem[4]
+    triesText.color = colSchem[4]
+    currTimeText.color = colSchem[4]
+    prevValuesText.color = colSchem[4]
+    box1.color = colSchem[4]
+    box2.color = colSchem[4]
+    box3.color = colSchem[4]
+    box4.color = colSchem[4]
+    box5.color = colSchem[4]
+    box6.color = colSchem[4]
+    darkButtonContainer.bgcolor = colSchem[2]
+    exitButtonContainer.bgcolor = colSchem[2]
+    keyContainer.bgcolor = colSchem[2]
+    correctText.color = colSchem[8]
+    closeText.color = colSchem[7]
+    mediumText.color = colSchem[6]
+    farText.color = colSchem[5]
+
+
+#----BAR CHART----#
+
+barGraph = go.Figure()
+
+barGraph.add_trace(go.Bar(
+    y=[1,2,3],
+    name='Primary Product',
+    marker_color='indianred',
+))   
+#bar chart settings
+barGraph.update_layout(
+    autosize = True,
+    # width= aspectX * 100,
+    # height= aspectY * 100,
+    margin=dict(
+        l=0,
+        r=0,
+        b=0,
+        t=0,
+        pad=1
+    ),
+    xaxis = dict(
+    tickfont = dict(size=20)),
+    paper_bgcolor="rgba(0,0,0,0)",
+    xaxis_color="#FFFFFF",
+    plot_bgcolor='rgba(0,0,0,0)',
+    bargap = 0,
+)
+barGraph.update_xaxes(
+    showline = True,
+    linecolor = "White",
+    visible = False,
+)
+barGraph.update_yaxes(
+    showline = False,
+    showgrid = False,
+    showticklabels = False,
+)
+
+#----ALL ELEMENTS ON THE SCREEN---#
+
+barGraphDisplay = PlotlyChart(barGraph,expand=True)
+titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena", size= textRatio * 50, color= colSchem[4])
+elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+prevValuesText = ft.Text("Previous values", font_family="Boldena", size= textRatio * 50, color= colSchem[4])
+box1 = ft.Text("1", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+box2 = ft.Text("2", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+box3 = ft.Text("3", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+box4 = ft.Text("4", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+box5 = ft.Text("5", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+box6 = ft.Text("6", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
+correctText = ft.Text("100% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[8])
+closeText = ft.Text(">75% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[7])
+mediumText = ft.Text("<75% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[6])
+farText = ft.Text("<50% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[5])
+darkButton = ft.IconButton(
+        icon=ft.icons.DARK_MODE,
+        icon_color="#232528",
+        selected_icon_color='#FFFFFF',
+        icon_size=textRatio * 40,
+        tooltip="Toggle Dark Mode",
+        on_click=toggleDarkMode,
     )
-    page.barGraphContainerInner = ft.Container(
-            content=page.barGraphDisplay,
-            margin=2,
-            padding=10,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 1103,
-            height= page.windowY/page.aspectY * 841,
-            border_radius=10,
-        )
-    page.barGraphContainerOuter = ft.Container(
-            content =  page.barGraphContainerInner,
-            margin=2,
-            padding=10,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[1],
-            width= page.windowX/page.aspectX * 1136,
-            height= page.windowY/page.aspectY * 891,
-            border_radius=10,
-        )
-    page.currTimeContainer = ft.Container(
-            content=page.currTimeText,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.Alignment(-0.9,0),
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 594,
-            height= page.windowY/page.aspectY * 83,
-            border_radius=10,
-        )
-    page.noTriesContainer = ft.Container(
-            content=page.triesText,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.Alignment(-0.9,0),
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 594,
-            height= page.windowY/page.aspectY * 83,
-            border_radius=10,
-        )
-    page.elapsedTimeContainer = ft.Container(
-            content=page.elapsedTimeText,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.Alignment(-0.9,0),
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 594,
-            height= page.windowY/page.aspectY * 83,
-            border_radius=10,
-        )
-    page.rightTopContainer = ft.Container(
-            content=
-            ft.Column (
-                [
-                #current time box
-                page.currTimeContainer,
-                #no of tries box
-                page.noTriesContainer,
-                #elapsed time box
-                page.elapsedTimeContainer,
-                ],
-                alignment=ft.MainAxisAlignment.CENTER,
-            ),
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[1],
-            width= page.windowX/page.aspectX * 660,
-            height= page.windowY/page.aspectY * 313,
-            border_radius=10,
-        )
-    page.prevValuesContainer = ft.Container(
-        content=page.prevValuesText,
+exitButton = ft.IconButton(
+        icon=ft.icons.EXIT_TO_APP,
+        icon_color="red",
+        selected_icon_color='#FFFFFF',
+        icon_size=textRatio * 40,
+        tooltip="Exit",
+        on_click=closeApp,
+    )
+darkButtonContainer = ft.Container(
+        content= darkButton,
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
-        bgcolor=page.colSchem[2],
-        width= page.windowX/page.aspectX * 450,
-        height= page.windowY/page.aspectY * 100,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 83,
+        height= windowY/aspectY * 83,
         border_radius=10,
-        )
-    page.dividerContainer = ft.Container(
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[0],
-            width= page.windowX/page.aspectX * 595,
-            height= page.windowY/page.aspectY * 5,
-            border_radius=10,
-        )
-    page.box1Container = ft.Container(
-            content=page.box1,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 300,
-            height= page.windowY/page.aspectY * 150,
-            border_radius=10,
-        )
-    page.box3Container = ft.Container(
-            content=page.box3,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 300,
-            height= page.windowY/page.aspectY * 150,
-            border_radius=10,
-        )
-    page.box5Container = ft.Container(
-            content=page.box5,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 300,
-            height= page.windowY/page.aspectY * 150,
-            border_radius=10,
-        )
-    page.box2Container = ft.Container(
-            content=page.box2,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 300,
-            height= page.windowY/page.aspectY * 150,
-            border_radius=10,
-        )
-    page.box4Container = ft.Container(
-            content=page.box4,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 300,
-            height= page.windowY/page.aspectY * 150,
-            border_radius=10,
-        )
-    page.box6Container = ft.Container(
-            content=page.box6,
-            margin=2,
-            padding=2,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[2],
-            width= page.windowX/page.aspectX * 300,
-            height= page.windowY/page.aspectY * 150,
-            border_radius=10,
-        )
-    page.bottomRightContainer = ft.Container(
-            content=
-            ft.Column(
+    )
+exitButtonContainer = ft.Container(
+        content= exitButton,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 83,
+        height= windowY/aspectY * 83,
+        border_radius=10,
+    )
+keyContainer = ft.Container(
+        content= 
+        ft.Row([
+            ft.Column([
+                correctText,
+                mediumText,
+            ],
+            spacing = 1,
+            alignment=ft.MainAxisAlignment.CENTER,
+            ),
+            ft.Column([
+                closeText,
+                farText,
+            ],
+            spacing = 1,
+            alignment=ft.MainAxisAlignment.CENTER,
+            ),
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        ),
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 350,
+        height= windowY/aspectY * 83,
+        border_radius=10,
+    )
+titleContainer = ft.Container(
+        content= titleText,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.Alignment(-0.9,0),
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 500,
+        height= windowY/aspectY * 83,
+        border_radius=10,
+    )
+topLeftContainer = ft.Row(
+    [
+    
+    titleContainer,
+    keyContainer,
+    darkButtonContainer,
+    exitButtonContainer,
+    
+    ],
+    spacing= 15
+)
+barGraphContainerInner = ft.Container(
+        content=barGraphDisplay,
+        margin=2,
+        padding=10,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 1103,
+        height= windowY/aspectY * 841,
+        border_radius=10,
+    )
+barGraphContainerOuter = ft.Container(
+        content =  barGraphContainerInner,
+        margin=2,
+        padding=10,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[1],
+        width= windowX/aspectX * 1136,
+        height= windowY/aspectY * 891,
+        border_radius=10,
+    )
+currTimeContainer = ft.Container(
+        content=currTimeText,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.Alignment(-0.9,0),
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 594,
+        height= windowY/aspectY * 83,
+        border_radius=10,
+    )
+noTriesContainer = ft.Container(
+        content=triesText,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.Alignment(-0.9,0),
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 594,
+        height= windowY/aspectY * 83,
+        border_radius=10,
+    )
+elapsedTimeContainer = ft.Container(
+        content=elapsedTimeText,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.Alignment(-0.9,0),
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 594,
+        height= windowY/aspectY * 83,
+        border_radius=10,
+    )
+rightTopContainer = ft.Container(
+        content=
+        ft.Column (
+            [
+            #current time box
+            currTimeContainer,
+            #no of tries box
+            noTriesContainer,
+            #elapsed time box
+            elapsedTimeContainer,
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        ),
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[1],
+        width= windowX/aspectX * 660,
+        height= windowY/aspectY * 313,
+        border_radius=10,
+    )
+prevValuesContainer = ft.Container(
+    content=prevValuesText,
+    margin=2,
+    padding=2,
+    alignment=ft.alignment.center,
+    bgcolor=colSchem[2],
+    width= windowX/aspectX * 450,
+    height= windowY/aspectY * 100,
+    border_radius=10,
+    )
+dividerContainer = ft.Container(
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[0],
+        width= windowX/aspectX * 595,
+        height= windowY/aspectY * 5,
+        border_radius=10,
+    )
+box1Container = ft.Container(
+        content=box1,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 300,
+        height= windowY/aspectY * 150,
+        border_radius=10,
+    )
+box3Container = ft.Container(
+        content=box3,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 300,
+        height= windowY/aspectY * 150,
+        border_radius=10,
+    )
+box5Container = ft.Container(
+        content=box5,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 300,
+        height= windowY/aspectY * 150,
+        border_radius=10,
+    )
+box2Container = ft.Container(
+        content=box2,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 300,
+        height= windowY/aspectY * 150,
+        border_radius=10,
+    )
+box4Container = ft.Container(
+        content=box4,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 300,
+        height= windowY/aspectY * 150,
+        border_radius=10,
+    )
+box6Container = ft.Container(
+        content=box6,
+        margin=2,
+        padding=2,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[2],
+        width= windowX/aspectX * 300,
+        height= windowY/aspectY * 150,
+        border_radius=10,
+    )
+bottomRightContainer = ft.Container(
+        content=
+        ft.Column(
+            [
+            ft.Row(
                 [
-                ft.Row(
-                    [
-                    #prev values box
-                    page.prevValuesContainer,
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                ),
-                ft.Row(
-                    [
-                    #divider
-                    page.dividerContainer,
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                ),
-                ft.Row(
-                    [
-                        ft.Column(
-                            [
-                            page.box1Container,
-                            page.box3Container,
-                            page.box5Container,
-                            ]
-                        ),
-                        ft.Column(
-                            [
-                            page.box2Container,
-                            page.box4Container,
-                            page.box6Container,
-                            ]
-                        ),
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                ),
+                #prev values box
+                prevValuesContainer,
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
             ),
-            margin=2,
-            padding=10,
-            alignment=ft.alignment.center,
-            bgcolor=page.colSchem[1],
-            width= page.windowX/page.aspectX * 660,
-            height= page.windowY/page.aspectY * 661,
-            border_radius=10,
-        )
-
-    #----SCREEN STRUCTURE----#
-
-    #left side
-    def left_column(align: ft.CrossAxisAlignment):
-        return ft.Column (
-            [
-            #title
-            page.topLeftContainer,
-            #bar chart
-            page.barGraphContainerOuter,
-            ]
-        )
-    
-    #right side
-    def right_column(align: ft.CrossAxisAlignment):
-        return ft.Column(
-            [
-            page.rightTopContainer,
-            page.bottomRightContainer,
+            ft.Row(
+                [
+                #divider
+                dividerContainer,
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+            ),
+            ft.Row(
+                [
+                    ft.Column(
+                        [
+                        box1Container,
+                        box3Container,
+                        box5Container,
+                        ]
+                    ),
+                    ft.Column(
+                        [
+                        box2Container,
+                        box4Container,
+                        box6Container,
+                        ]
+                    ),
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+            ),
             ],
-        )
-        
-    #add all elements to the screen
-    page.add(
-        ft.Row(
-        [
-            left_column(ft.CrossAxisAlignment.START),
-            right_column(ft.CrossAxisAlignment.END),
-        ],
-        spacing=15,
-        alignment=ft.MainAxisAlignment.START,
-        vertical_alignment=ft.CrossAxisAlignment.START,
+            alignment=ft.MainAxisAlignment.CENTER,
         ),
-
+        margin=2,
+        padding=10,
+        alignment=ft.alignment.center,
+        bgcolor=colSchem[1],
+        width= windowX/aspectX * 660,
+        height= windowY/aspectY * 661,
+        border_radius=10,
     )
-    page.update()
 
-    #---TIMING LOGIC---#
+#----SCREEN STRUCTURE----#
+bogoContainer = ft.Row(
+    [
+        ft.Column (
+        [
+        #title
+        topLeftContainer,
+        #bar chart
+        barGraphContainerOuter,
+        ],
+        ),
+        ft.Column(
+        [
+        rightTopContainer,
+        bottomRightContainer,
+        ],
+        )
+    ]
+)
 
-    startTime = timer()
-    #calculates the total time
-    def elapsedTime():
-        endTime= timer()
-        total = endTime - startTime
-        seconds = total % 60
-        minutes = total // 60
-        hours = total // 3600
-        if seconds < 10:
-            seconds = f"0{int(seconds)}"
-        else:
-            seconds= int(seconds)
-        if minutes < 10:
-            minutes = f"0{int(minutes)}"
-        else:
-            minutes = int(minutes)
-        if hours < 10:
-            hours = f"0{int(hours)}"
-        else:
-            hours = int(hours)
-        page.elapsedTimeText.value = f"Total time - {hours}:{minutes}:{seconds}"
-        page.elapsedTimeText.update()
+#left side
+def left_column(align: ft.CrossAxisAlignment):
+    return ft.Column (
+        [
+        #title
+        topLeftContainer,
+        #bar chart
+        barGraphContainerOuter,
+        ]
+    )
 
-    #calculates the time difference between 2 values
-    def timeDifference(time1, time2):
-        total = time1 - time2
-        seconds = total % 60
-        minutes = total // 60
-        hours = total // 3600
-        if seconds < 10:
-            seconds = f"0{int(seconds)}"
-        else:
-            seconds= int(seconds)
-        if minutes < 10:
-            minutes = f"0{int(minutes)}"
-        else:
-            minutes = int(minutes)
-        if hours < 10:
-            hours = f"0{int(hours)}"
-        else:
-            hours = int(hours)
-        return f"{hours}:{minutes}:{seconds}"
-        
-    #----SORT AND COLOR BARS LOGIC----#
-
-    #checks if the list is sorted and if it is not, shuffles it again. 
-    #also handles updating all of the display elements except prev values
-    def sortChecker(list1, currNum):
-        listSorted = False
-        tries = 0
-        thisTime = timer()
-        while listSorted == False:
-            listSorted = True
-            for i in range(0, len(list1) - 1):
-                if list1[i+1] < list1[i]:
-                    listSorted = False
-            tries += 1
-            shuffle(list_shuffled)
-            updateNoTries(tries)
-            measuredTime = timer()
-            currTime = timeDifference(measuredTime, thisTime)
-
-            #runs every 10 tries to speed the program up from updating the display elements to quickly    
-            if tries % 10 == 0:
-                page.currTimeText.value = f"Current sort time - {currTime}"
-                page.currTimeText.update()
-                updateBarChart(list_shuffled,tries)
-                page.barGraphDisplay.update()
-                elapsedTime()
-            else:
-                pass
-        storeInfo(currNum, tries, currTime)
-
+#right side
+def right_column(align: ft.CrossAxisAlignment):
+    return ft.Column(
+        [
+        rightTopContainer,
+        bottomRightContainer,
+        ],
+    )
     
-    #find the difference between sorted and unsorted list
-    #compare each value in the compared list with the number it is meant to be
-    #if the compared number is zero, the number is in the right place and is coloured green
-    #if compared number is within 25% range of the actual value it is coloured yellow
-    #if compared number is within half the range of the actual value it is coloured orange
-    #else number is coloured red
-    def barColorList(list1):
-        barColorList = []
-        diff_list = []
-        
-        for i in range(0, len(list1)):
-            diff_list.append(abs(list1[i] - (i+1)))
-        
-        for i in range(0, len(diff_list)):
-            if diff_list[i] == 0:
-                barColorList.append(page.colSchem[8])
-            
-            elif diff_list[i] < (len(diff_list) / 100) * 25:
-                barColorList.append(page.colSchem[7])
-            elif diff_list[i] < len(diff_list) / 2:
-                barColorList.append(page.colSchem[6])
-            else: 
-                barColorList.append(page.colSchem[5])
-        return barColorList
-        
-    #----UPDATING ELEMENTS ON DISPLAY LOGIC----#   
-        
-    #updates the bar graph and colors it
-    def updateBarChart(list2,tries):
-        barGraph.update_traces(go.Bar(
-            y=list2,
-            marker_color = barColorList(list2),
-        ))
+#add all elements to the screen
 
-    #updates the no of tries element
-    def updateNoTries(tries):
-        page.triesText.value = f"Number of tries: {tries}"
-        page.triesText.update()
-
-    #updates the title with the current number of values in the list it is sorting
-    def updateTitleText(num):
-        page.titleText.value = f"Bogo Sort - {num}"
-        page.titleText.update()
-    
-    #after a successful sort, it is stored in a list with the number of values in the list, the list sort time and the number of tries
-    prevResults = ['','','','','','']
-    def storeInfo (currNum, tries, currTime):
-        prevResults.insert(0,f"{currNum} values took:\n{currTime}\nTries: {tries}")
-
-    #updates all the previous values boxes with the prev results stored in prevResults
-    def updatePrevResults():
-        page.box1.value = prevResults[0]
-        page.box2.value = prevResults[1]
-        page.box3.value = prevResults[2]
-        page.box4.value = prevResults[3]
-        page.box5.value = prevResults[4]
-        page.box6.value = prevResults[5]
-        page.update()
-
-    #----INITIALIZATION AND MAIN LOOP LOGIC----#
-
-    #takes in a length and makes a new list from 1 - length
-    def makeNewList(length):
-        global list_shuffled
-        list_shuffled = list(range(1, length + 1))
-        shuffle(list_shuffled)  
-
-    #Responsible for making incrementing the number of values in the list, checking wether the list is sorted and updating the prev values and title text
-    for i in range(2, 100):
-        makeNewList(i)
-        updateTitleText(i)
-        sortChecker(list_shuffled, i)
-        updatePrevResults()
-    
-#ft.app(target=main, assets_dir="fonts")
-ft.app(target=bogo,port=5000,assets_dir="fonts")
-
+startTime = timer()
+def elapsedTime():
+    endTime= timer()
+    total = endTime - startTime
+    seconds = total % 60
+    minutes = total // 60
+    hours = total // 3600
+    if seconds < 10:
+        seconds = f"0{int(seconds)}"
+    else:
+        seconds= int(seconds)
+    if minutes < 10:
+        minutes = f"0{int(minutes)}"
+    else:
+        minutes = int(minutes)
+    if hours < 10:
+        hours = f"0{int(hours)}"
+    else:
+        hours = int(hours)
+    return f"Total time - {hours}:{minutes}:{seconds}"

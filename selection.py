@@ -1,4 +1,6 @@
 import flet as ft
+import bogo as bo
+from time import sleep
 
 def main(page: ft.Page):
     page.windowY = 954
@@ -19,7 +21,13 @@ def main(page: ft.Page):
     }
 
     def bogoStart(e):
-        pass
+        page.mainWindow.content = bo.bogoContainer
+        page.update()
+        for i in range(2, 100):
+            bo.elapsedTimeText.value = bo.elapsedTime()
+            sleep(1)
+            bo.elapsedTimeText.update()
+
 
     page.mainWindow = ft.Container (
         content= ft.Text(""),
@@ -27,7 +35,7 @@ def main(page: ft.Page):
         padding=2,
         alignment=ft.alignment.center,
         bgcolor="blue",
-        width= page.windowX/page.aspectX * 1500,
+        width= page.windowX/page.aspectX * 1800,
         height= page.windowY/page.aspectY * 1000,
         border_radius=10,
     )
@@ -53,6 +61,8 @@ def main(page: ft.Page):
     def rightColumn(align: ft.CrossAxisAlignment):
         return ft.Column (
             [
+                # bo.rightTopContainer,
+                # bo.bottomRightContainer,
                 page.mainWindow,
             ],
         )
@@ -78,4 +88,4 @@ def main(page: ft.Page):
     )
     
 
-ft.app(target=main,port=5001,)
+ft.app(target=main,port=5001)
