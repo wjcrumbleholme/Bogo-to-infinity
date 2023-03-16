@@ -9,8 +9,11 @@ from random import shuffle
 
 
 def main(page: ft.Page):
-    page.light = ["#162127","#426276","#89A8BD","#BECEDA", "#2A2D34"]
-    page.dark = ["#2A2D34", "#4A5F82", "#405763", "#2A2D34", "#FFFFFF"]
+
+    #----COLORS----#
+    # FORMAT: [Divider color, Container border color, Container color, Background color,  Text color, Far bar, Medium bar, Close bar, Actual bar]
+    page.light = ["#BDCDD6","#6096B4","#93BFCF","#BDCDD6", "#2C3333", "#FF6363", "#FFAB76", "#FFFDA2", "#BAFFB4"]
+    page.dark = ["#2C3333", "#2E4F4F", "#0E8388", "#2C3333", "#CBE4DE", "#37306B", "#66347F", "#9E4784", "#D27685"]
     page.colSchem = page.light
 
     page.windowY = 954
@@ -84,7 +87,10 @@ def main(page: ft.Page):
         page.box6.color = page.colSchem[4]
         page.darkButtonContainer.bgcolor = page.colSchem[2]
         page.keyContainer.bgcolor = page.colSchem[2]
-        page.keyText.color = page.colSchem[4]
+        page.correctText.color = page.colSchem[8]
+        page.closeText.color = page.colSchem[7]
+        page.mediumText.color = page.colSchem[6]
+        page.farText.color = page.colSchem[5]
         page.update()
 
     #----BAR CHART----#
@@ -130,7 +136,6 @@ def main(page: ft.Page):
 
     page.barGraphDisplay = PlotlyChart(barGraph,expand=True)
     page.titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena", size= page.textRatio * 50, color= page.colSchem[4])
-    page.keyText = ft.Text("<50% Correct = Red, <75% Correct = Orange \n>75% Correct = Yellow, 100% Correct = Green", font_family= "Boldena", size= page.textRatio * 16, color = page.colSchem[4])
     page.elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
     page.triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
     page.currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
@@ -141,6 +146,10 @@ def main(page: ft.Page):
     page.box4 = ft.Text("4", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
     page.box5 = ft.Text("5", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
     page.box6 = ft.Text("6", font_family="Boldena", size= page.textRatio * 32, color= page.colSchem[4])
+    page.correctText = ft.Text("100% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[8])
+    page.closeText = ft.Text(">75% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[7])
+    page.mediumText = ft.Text("<75% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[6])
+    page.farText = ft.Text("<50% Correct", font_family= "Boldena", size= page.textRatio * 24, color = page.colSchem[5])
     page.darkButton = ft.IconButton(
             icon=ft.icons.DARK_MODE,
             icon_color="#232528",
@@ -160,14 +169,32 @@ def main(page: ft.Page):
             border_radius=10,
         )
     page.keyContainer = ft.Container(
-            content= page.keyText,
-                margin=2,
-                padding=2,
-                alignment=ft.alignment.center,
-                bgcolor=page.colSchem[2],
-                width= page.windowX/page.aspectX * 500,
-                height= page.windowY/page.aspectY * 83,
-                border_radius=10,
+            content= 
+            ft.Row([
+                ft.Column([
+                    page.correctText,
+                    page.mediumText,
+                ],
+                spacing = 1,
+                alignment=ft.MainAxisAlignment.CENTER,
+                ),
+                ft.Column([
+                    page.closeText,
+                    page.farText,
+                ],
+                spacing = 1,
+                alignment=ft.MainAxisAlignment.CENTER,
+                ),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            ),
+            margin=2,
+            padding=2,
+            alignment=ft.alignment.center,
+            bgcolor=page.colSchem[2],
+            width= page.windowX/page.aspectX * 350,
+            height= page.windowY/page.aspectY * 83,
+            border_radius=10,
         )
     page.titleContainer = ft.Container(
             content= page.titleText,
@@ -181,9 +208,11 @@ def main(page: ft.Page):
         )
     page.topLeftContainer = ft.Row(
         [
+        
         page.titleContainer,
-        page.darkButtonContainer,
         page.keyContainer,
+        page.darkButtonContainer,
+        
         ],
         spacing= 15
     )
@@ -375,7 +404,7 @@ def main(page: ft.Page):
                     alignment=ft.MainAxisAlignment.CENTER,
                 ),
                 ],
-                alignment=ft.CrossAxisAlignment.CENTER,
+                alignment=ft.MainAxisAlignment.CENTER,
             ),
             margin=2,
             padding=10,
@@ -514,14 +543,14 @@ def main(page: ft.Page):
         
         for i in range(0, len(diff_list)):
             if diff_list[i] == 0:
-                barColorList.append("#C5D86D")
+                barColorList.append(page.colSchem[8])
             
             elif diff_list[i] < (len(diff_list) / 100) * 25:
-                barColorList.append("#FADF7F")
+                barColorList.append(page.colSchem[7])
             elif diff_list[i] < len(diff_list) / 2:
-                barColorList.append("#FCAA67")
+                barColorList.append(page.colSchem[6])
             else: 
-                barColorList.append("#CC444B")
+                barColorList.append(page.colSchem[5])
         return barColorList
         
     #----UPDATING ELEMENTS ON DISPLAY LOGIC----#   
