@@ -4,94 +4,6 @@ import flet as ft
 from flet.plotly_chart import PlotlyChart
 from time import sleep
 from random import shuffle
-import os
-
-
-
-#----COLORS----#
-# FORMAT: [Divider color, Container border color, Container color, Background color,  Text color, Far bar, Medium bar, Close bar, Actual bar]
-light = ["#BDCDD6","#6096B4","#93BFCF","#BDCDD6", "#2C3333", "#FF6363", "#FFAB76", "#FFFDA2", "#BAFFB4"]
-dark = ["#2C3333", "#2E4F4F", "#0E8388", "#2C3333", "#CBE4DE", "#37306B", "#66347F", "#9E4784", "#D27685"]
-colSchem = light
-
-windowY = 954
-windowX = 1672
-aspectY = 900
-aspectX = 1600
-textRatio = ((windowX * windowY) / (aspectX * aspectY))
-
-
-#settings for the     title = "Bogo-to-infinity"
-window_height = windowY
-window_width = windowX
-window_resizable = True
-window_maximized = True
-window_full_screen = True
-bgcolor=colSchem[3]
-fonts = {
-    'Boldena' : "/fonts/BoldenaBold.ttf"
-}
-
-#----DARK MODE AND THEMES----#    
-
-def toggleDarkMode(e):
-    darkButton.on_click = toggleLightMode
-    darkButton.icon = ft.icons.LIGHT_MODE
-    darkButton.icon_color = "#FFFFFF"
-    darkButton.tooltip = "Toggle Light Mode"
-    
-    colSchem = dark
-    updateColors()
-    
-def toggleLightMode(e):
-    darkButton.on_click = toggleDarkMode
-    darkButton.icon=ft.icons.DARK_MODE
-    darkButton.icon_color="#232528"
-    darkButton.tooltip = "Toggle Dark Mode"
-
-    colSchem = light
-    updateColors()
-
-def closeApp(e):
-    os._exit(1)
-
-#This is utterly stupid and dumb
-def updateColors():
-    bgcolor = colSchem[3]
-    titleContainer.bgcolor = colSchem[2]
-    barGraphContainerOuter.bgcolor = colSchem[1]
-    barGraphContainerInner.bgcolor = colSchem[2]
-    currTimeContainer.bgcolor = colSchem[2]
-    noTriesContainer.bgcolor = colSchem[2]
-    elapsedTimeContainer.bgcolor = colSchem[2]
-    rightTopContainer.bgcolor = colSchem[1]
-    prevValuesContainer.bgcolor = colSchem[2]
-    dividerContainer.bgcolor = colSchem[0]
-    box1Container.bgcolor = colSchem[2]
-    box3Container.bgcolor = colSchem[2]
-    box5Container.bgcolor = colSchem[2]
-    box2Container.bgcolor = colSchem[2]
-    box4Container.bgcolor = colSchem[2]
-    box6Container.bgcolor = colSchem[2]
-    bottomRightContainer.bgcolor = colSchem[1]
-    titleText.color = colSchem[4]
-    elapsedTimeText.color = colSchem[4]
-    triesText.color = colSchem[4]
-    currTimeText.color = colSchem[4]
-    prevValuesText.color = colSchem[4]
-    box1.color = colSchem[4]
-    box2.color = colSchem[4]
-    box3.color = colSchem[4]
-    box4.color = colSchem[4]
-    box5.color = colSchem[4]
-    box6.color = colSchem[4]
-    darkButtonContainer.bgcolor = colSchem[2]
-    exitButtonContainer.bgcolor = colSchem[2]
-    keyContainer.bgcolor = colSchem[2]
-    correctText.color = colSchem[8]
-    closeText.color = colSchem[7]
-    mediumText.color = colSchem[6]
-    farText.color = colSchem[5]
 
 
 #----BAR CHART----#
@@ -133,61 +45,24 @@ barGraph.update_yaxes(
     showticklabels = False,
 )
 
-#----ALL ELEMENTS ON THE SCREEN---#
 
-barGraphDisplay = PlotlyChart(barGraph,expand=True)
-titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena", size= textRatio * 50, color= colSchem[4])
-elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-prevValuesText = ft.Text("Previous values", font_family="Boldena", size= textRatio * 50, color= colSchem[4])
-box1 = ft.Text("1", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-box2 = ft.Text("2", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-box3 = ft.Text("3", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-box4 = ft.Text("4", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-box5 = ft.Text("5", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-box6 = ft.Text("6", font_family="Boldena", size= textRatio * 32, color= colSchem[4])
-correctText = ft.Text("100% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[8])
-closeText = ft.Text(">75% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[7])
-mediumText = ft.Text("<75% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[6])
-farText = ft.Text("<50% Correct", font_family= "Boldena", size= textRatio * 24, color = colSchem[5])
-darkButton = ft.IconButton(
-        icon=ft.icons.DARK_MODE,
-        icon_color="#232528",
-        selected_icon_color='#FFFFFF',
-        icon_size=textRatio * 40,
-        tooltip="Toggle Dark Mode",
-        on_click=toggleDarkMode,
-    )
-exitButton = ft.IconButton(
-        icon=ft.icons.EXIT_TO_APP,
-        icon_color="red",
-        selected_icon_color='#FFFFFF',
-        icon_size=textRatio * 40,
-        tooltip="Exit",
-        on_click=closeApp,
-    )
-darkButtonContainer = ft.Container(
-        content= darkButton,
+def topLeftContainer(sizeX, sizeY, sizeText, colSchem):
+    titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena", size= sizeText * 50, color= colSchem[4])
+    correctText = ft.Text("100% Correct", font_family= "Boldena", size= sizeText * 24, color = colSchem[8])
+    closeText = ft.Text(">75% Correct", font_family= "Boldena", size= sizeText * 24, color = colSchem[7])
+    mediumText = ft.Text("<75% Correct", font_family= "Boldena", size= sizeText * 24, color = colSchem[6])
+    farText = ft.Text("<50% Correct", font_family= "Boldena", size= sizeText * 24, color = colSchem[5])
+    titleContainer = ft.Container(
+        content= titleText,
         margin=2,
         padding=2,
-        alignment=ft.alignment.center,
+        alignment=ft.alignment.Alignment(-0.9,0),
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 83,
-        height= windowY/aspectY * 83,
+        width= sizeX * 500,
+        height= sizeY * 83,
         border_radius=10,
     )
-exitButtonContainer = ft.Container(
-        content= exitButton,
-        margin=2,
-        padding=2,
-        alignment=ft.alignment.center,
-        bgcolor=colSchem[2],
-        width= windowX/aspectX * 83,
-        height= windowY/aspectY * 83,
-        border_radius=10,
-    )
-keyContainer = ft.Container(
+    keyContainer = ft.Container(
         content= 
         ft.Row([
             ft.Column([
@@ -211,182 +86,193 @@ keyContainer = ft.Container(
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 350,
-        height= windowY/aspectY * 83,
+        width= sizeX * 350,
+        height= sizeY * 83,
         border_radius=10,
     )
-titleContainer = ft.Container(
-        content= titleText,
-        margin=2,
-        padding=2,
-        alignment=ft.alignment.Alignment(-0.9,0),
-        bgcolor=colSchem[2],
-        width= windowX/aspectX * 500,
-        height= windowY/aspectY * 83,
-        border_radius=10,
+
+
+    container = ft.Row(
+        [
+        
+        titleContainer,
+        keyContainer,       
+        ],
+        spacing= 15
     )
-topLeftContainer = ft.Row(
-    [
-    
-    titleContainer,
-    keyContainer,
-    darkButtonContainer,
-    exitButtonContainer,
-    
-    ],
-    spacing= 15
-)
-barGraphContainerInner = ft.Container(
-        content=barGraphDisplay,
-        margin=2,
-        padding=10,
-        alignment=ft.alignment.center,
-        bgcolor=colSchem[2],
-        width= windowX/aspectX * 1103,
-        height= windowY/aspectY * 841,
-        border_radius=10,
-    )
-barGraphContainerOuter = ft.Container(
-        content =  barGraphContainerInner,
+    return container
+
+def barGraphElement(sizeX, sizeY, sizeText, colSchem):
+    barGraphDisplay = PlotlyChart(barGraph,expand=True)
+    barGraphContainerInner = ft.Container(
+            content=barGraphDisplay,
+            margin=2,
+            padding=10,
+            alignment=ft.alignment.center,
+            bgcolor=colSchem[2],
+            width= sizeX * 1053,
+            height= sizeY * 778,
+            border_radius=10,
+        )
+    barGraphContainerOuter = ft.Container(
+        content=barGraphContainerInner,
         margin=2,
         padding=10,
         alignment=ft.alignment.center,
         bgcolor=colSchem[1],
-        width= windowX/aspectX * 1136,
-        height= windowY/aspectY * 891,
+        width= sizeX * 1086,
+        height= sizeY * 811,
         border_radius=10,
     )
-currTimeContainer = ft.Container(
+    return barGraphContainerOuter
+
+
+def rightTopContainer(sizeX, sizeY, sizeText, colSchem):
+    elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
+    triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
+    currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
+    currTimeContainer = ft.Container(
         content=currTimeText,
         margin=2,
         padding=2,
         alignment=ft.alignment.Alignment(-0.9,0),
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 594,
-        height= windowY/aspectY * 83,
+        width= sizeX * 450,
+        height= sizeY * 83,
         border_radius=10,
     )
-noTriesContainer = ft.Container(
+    noTriesContainer = ft.Container(
         content=triesText,
         margin=2,
         padding=2,
         alignment=ft.alignment.Alignment(-0.9,0),
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 594,
-        height= windowY/aspectY * 83,
+        width= sizeX * 450,
+        height= sizeY * 83,
         border_radius=10,
     )
-elapsedTimeContainer = ft.Container(
+    elapsedTimeContainer = ft.Container(
         content=elapsedTimeText,
         margin=2,
         padding=2,
         alignment=ft.alignment.Alignment(-0.9,0),
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 594,
-        height= windowY/aspectY * 83,
+        width= sizeX * 450,
+        height= sizeY * 83,
         border_radius=10,
     )
-rightTopContainer = ft.Container(
-        content=
-        ft.Column (
-            [
-            #current time box
-            currTimeContainer,
-            #no of tries box
-            noTriesContainer,
-            #elapsed time box
-            elapsedTimeContainer,
-            ],
-            alignment=ft.MainAxisAlignment.CENTER,
-        ),
-        margin=2,
-        padding=2,
-        alignment=ft.alignment.center,
-        bgcolor=colSchem[1],
-        width= windowX/aspectX * 660,
-        height= windowY/aspectY * 313,
-        border_radius=10,
-    )
-prevValuesContainer = ft.Container(
+    container = ft.Container(
+            content=
+            ft.Column (
+                [
+                #current time box
+                currTimeContainer,
+                #no of tries box
+                noTriesContainer,
+                #elapsed time box
+                elapsedTimeContainer,
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+            ),
+            margin=2,
+            padding=2,
+            alignment=ft.alignment.center,
+            bgcolor=colSchem[1],
+            width= sizeX * 480,
+            height= sizeY * 313,
+            border_radius=10,
+        )
+    return container
+
+def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
+    prevValuesText = ft.Text("Previous values", font_family="Boldena", size= sizeText * 40, color= colSchem[4])
+    box1 = ft.Text("1", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
+    box2 = ft.Text("2", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
+    box3 = ft.Text("3", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
+    box4 = ft.Text("4", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
+    box5 = ft.Text("5", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
+    box6 = ft.Text("6", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
+    prevValuesContainer = ft.Container(
     content=prevValuesText,
     margin=2,
     padding=2,
     alignment=ft.alignment.center,
     bgcolor=colSchem[2],
-    width= windowX/aspectX * 450,
-    height= windowY/aspectY * 100,
+    width= sizeX * 350,
+    height= sizeY * 100,
     border_radius=10,
     )
-dividerContainer = ft.Container(
+    dividerContainer = ft.Container(
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[0],
-        width= windowX/aspectX * 595,
-        height= windowY/aspectY * 5,
+        width= sizeX * 415,
+        height= sizeY * 5,
         border_radius=10,
     )
-box1Container = ft.Container(
+        
+    box1Container = ft.Container(
         content=box1,
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 300,
-        height= windowY/aspectY * 150,
+        width= sizeX * 210,
+        height= sizeY * 110,
         border_radius=10,
     )
-box3Container = ft.Container(
+    box3Container = ft.Container(
         content=box3,
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 300,
-        height= windowY/aspectY * 150,
+        width= sizeX * 210,
+        height= sizeY * 110,
         border_radius=10,
     )
-box5Container = ft.Container(
+    box5Container = ft.Container(
         content=box5,
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 300,
-        height= windowY/aspectY * 150,
+        width= sizeX * 210,
+        height= sizeY * 110,
         border_radius=10,
     )
-box2Container = ft.Container(
+    box2Container = ft.Container(
         content=box2,
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 300,
-        height= windowY/aspectY * 150,
+        width= sizeX * 210,
+        height= sizeY * 110,
         border_radius=10,
     )
-box4Container = ft.Container(
+    box4Container = ft.Container(
         content=box4,
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 300,
-        height= windowY/aspectY * 150,
+        width= sizeX * 210,
+        height= sizeY * 110,
         border_radius=10,
     )
-box6Container = ft.Container(
+    box6Container = ft.Container(
         content=box6,
         margin=2,
         padding=2,
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
-        width= windowX/aspectX * 300,
-        height= windowY/aspectY * 150,
+        width= sizeX * 210,
+        height= sizeY * 110,
         border_radius=10,
     )
-bottomRightContainer = ft.Container(
+    container= ft.Container(
         content=
         ft.Column(
             [
@@ -430,51 +316,40 @@ bottomRightContainer = ft.Container(
         padding=10,
         alignment=ft.alignment.center,
         bgcolor=colSchem[1],
-        width= windowX/aspectX * 660,
-        height= windowY/aspectY * 661,
+        width= sizeX * 480,
+        height= sizeY * 580,
         border_radius=10,
     )
+    return container
+    
+
+
 
 #----SCREEN STRUCTURE----#
-bogoContainer = ft.Row(
-    [
-        ft.Column (
+def sendElementsToOtherFile(sizeX, sizeY, sizeText, colSchem):
+    bogoContainer = ft.Row(
         [
-        #title
-        topLeftContainer,
-        #bar chart
-        barGraphContainerOuter,
+            ft.Column (
+            [
+            #title
+            topLeftContainer(sizeX, sizeY, sizeText, colSchem),
+            #bar chart
+            barGraphElement(sizeX, sizeY, sizeText, colSchem),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER
+            ),
+            ft.Column(
+            [
+            rightTopContainer(sizeX, sizeY, sizeText, colSchem),
+            bottomRightContainer(sizeX, sizeY, sizeText, colSchem),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER
+            )
         ],
-        ),
-        ft.Column(
-        [
-        rightTopContainer,
-        bottomRightContainer,
-        ],
-        )
-    ]
-)
-
-#left side
-def left_column(align: ft.CrossAxisAlignment):
-    return ft.Column (
-        [
-        #title
-        topLeftContainer,
-        #bar chart
-        barGraphContainerOuter,
-        ]
+        alignment=ft.MainAxisAlignment.CENTER
     )
+    return bogoContainer
 
-#right side
-def right_column(align: ft.CrossAxisAlignment):
-    return ft.Column(
-        [
-        rightTopContainer,
-        bottomRightContainer,
-        ],
-    )
-    
 #add all elements to the screen
 
 startTime = timer()
