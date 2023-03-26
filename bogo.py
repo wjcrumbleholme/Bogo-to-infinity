@@ -128,6 +128,7 @@ def barGraphElement(sizeX, sizeY, sizeText, colSchem):
 
 
 def rightTopContainer(sizeX, sizeY, sizeText, colSchem):
+    global elapsedTimeText,elapsedTime
     elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
     triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
     currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
@@ -352,8 +353,8 @@ def sendElementsToOtherFile(sizeX, sizeY, sizeText, colSchem):
 
 #add all elements to the screen
 
-startTime = timer()
-def elapsedTime():
+
+def elapsedTime(startTime):
     endTime= timer()
     total = endTime - startTime
     seconds = total % 60

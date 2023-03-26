@@ -1,7 +1,7 @@
 import flet as ft
 import bogo as bo
 from time import sleep
-
+from timeit import default_timer as timer
 
 def main(page: ft.Page):
     # FORMAT: [Divider color, Container border color, Container color, Background color,  Text color, Far bar, Medium bar, Close bar, Actual bar]
@@ -60,7 +60,8 @@ def main(page: ft.Page):
         nonlocal bogoSortSelected
         bogoSortSelected = True
         page_update(e)
- 
+        startBogoLogic(0, 3)
+        
     def bogoSortElements(sizeX, sizeY, sizeText, colSchem):
         screenElements = ft.Container(
             content=bo.sendElementsToOtherFile(sizeX, sizeY, sizeText, colSchem)
@@ -193,6 +194,18 @@ def main(page: ft.Page):
         )
     
     addElementsToScreen()
+
+
+
+    #----BOGO LOGIC----#
+    def startBogoLogic(startNum, endNum):
+        startTime = timer()
+        for i in range(startNum, endNum):
+            bo.elapsedTimeText.value = bo.elapsedTime(startTime)
+            print('test')
+            sleep(1)
+            page.update()
+            
 
 ft.app(target=main,port=5000)
 #ft.app(target=main,port=5000,assets_dir="fonts",view=ft.WEB_BROWSER)
