@@ -46,8 +46,23 @@ barGraph.update_yaxes(
 )
 
 
+
+# global elapsedTimeText, titleText
+elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena")
+titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena")
+triesText = ft.Text("Amount of tries - 0", font_family="Boldena")
+currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena")
+box1 = ft.Text("1", font_family="Boldena")
+box2 = ft.Text("2", font_family="Boldena")
+box3 = ft.Text("3", font_family="Boldena")
+box4 = ft.Text("4", font_family="Boldena")
+box5 = ft.Text("5", font_family="Boldena")
+box6 = ft.Text("6", font_family="Boldena")
+prevValuesText = ft.Text("Previous values", font_family="Boldena")
+barGraphDisplay = PlotlyChart(barGraph,expand=True)
+
 def topLeftContainer(sizeX, sizeY, sizeText, colSchem):
-    titleText = ft.Text(f"Bogo Sort - 0", font_family = "Boldena", size= sizeText * 50, color= colSchem[4])
+    titleText.size, titleText.color = sizeText * 50, colSchem[4]
     correctText = ft.Text("100% Correct", font_family= "Boldena", size= sizeText * 24, color = colSchem[8])
     closeText = ft.Text(">75% Correct", font_family= "Boldena", size= sizeText * 24, color = colSchem[7])
     mediumText = ft.Text("<75% Correct", font_family= "Boldena", size= sizeText * 24, color = colSchem[6])
@@ -126,12 +141,10 @@ def barGraphElement(sizeX, sizeY, sizeText, colSchem):
     )
     return barGraphContainerOuter
 
-
 def rightTopContainer(sizeX, sizeY, sizeText, colSchem):
-    global elapsedTimeText,elapsedTime
-    elapsedTimeText = ft.Text("Total time - 00:00:00", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
-    triesText = ft.Text("Amount of tries - 0", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
-    currTimeText = ft.Text("Current sort time - 00:00:00", font_family="Boldena", size= sizeText * 28, color= colSchem[4])
+    elapsedTimeText.size, elapsedTimeText.color = sizeText * 28, colSchem[4]
+    triesText.size, triesText.color = sizeText * 28, colSchem[4]
+    currTimeText.size, currTimeText.color = sizeText * 28, colSchem[4]
     currTimeContainer = ft.Container(
         content=currTimeText,
         margin=2,
@@ -186,13 +199,13 @@ def rightTopContainer(sizeX, sizeY, sizeText, colSchem):
     return container
 
 def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
-    prevValuesText = ft.Text("Previous values", font_family="Boldena", size= sizeText * 40, color= colSchem[4])
-    box1 = ft.Text("1", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
-    box2 = ft.Text("2", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
-    box3 = ft.Text("3", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
-    box4 = ft.Text("4", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
-    box5 = ft.Text("5", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
-    box6 = ft.Text("6", font_family="Boldena", size= sizeText * 32, color= colSchem[4])
+    prevValuesText.size, prevValuesText.color = sizeText * 40, colSchem[4] 
+    box1.size, box1.color = sizeText * 20, colSchem[4]
+    box2.size, box2.color = sizeText * 20, colSchem[4]
+    box3.size, box3.color = sizeText * 20, colSchem[4]
+    box4.size, box4.color = sizeText * 20, colSchem[4]
+    box5.size, box5.color = sizeText * 20, colSchem[4]
+    box6.size, box6.color = sizeText * 20, colSchem[4]
     prevValuesContainer = ft.Container(
     content=prevValuesText,
     margin=2,
@@ -311,7 +324,7 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
                 alignment=ft.MainAxisAlignment.CENTER,
             ),
             ],
-            alignment=ft.MainAxisAlignment.CENTER,
+            alignment=ft.MainAxisAlignment.START,
         ),
         margin=2,
         padding=10,
@@ -325,9 +338,11 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
     
 
 
-
+barColorSchem = []
 #----SCREEN STRUCTURE----#
 def sendElementsToOtherFile(sizeX, sizeY, sizeText, colSchem):
+    global barColorSchem
+    barColorSchem = colSchem 
     bogoContainer = ft.Row(
         [
             ft.Column (
@@ -351,8 +366,75 @@ def sendElementsToOtherFile(sizeX, sizeY, sizeText, colSchem):
     )
     return bogoContainer
 
-#add all elements to the screen
+def makeNewList(length):
+    global list_shuffled
+    list_shuffled = list(range(1, length + 1))
+    shuffle(list_shuffled) 
 
+
+def updatePrevResults():
+    box1.value = prevResults[0]
+    box2.value = prevResults[1]
+    box3.value = prevResults[2]
+    box4.value = prevResults[3]
+    box5.value = prevResults[4]
+    box6.value = prevResults[5]
+    box1.update()
+    box2.update()
+    box3.update()
+    box4.update()
+    box5.update()
+    box6.update()
+        
+
+prevResults = ['','','','','','']
+def storeInfo (currNum, tries, currTime):
+    prevResults.insert(0,f"{currNum} values took:\n{currTime}\nTries: {tries}")
+
+def updateBarChart(list,tries):
+    barGraph.update_traces(go.Bar(
+        y=list,
+        marker_color = barColorList(list),
+    ))
+
+def barColorList(list):
+        global barColorSchem
+        barColorList = []
+        diff_list = []
+        
+        for i in range(0, len(list)):
+            diff_list.append(abs(list[i] - (i+1)))
+        
+        for i in range(0, len(diff_list)):
+            if diff_list[i] == 0:
+                barColorList.append(barColorSchem[8])
+            
+            elif diff_list[i] < (len(diff_list) / 100) * 25:
+                barColorList.append(barColorSchem[7])
+            elif diff_list[i] < len(diff_list) / 2:
+                barColorList.append(barColorSchem[6])
+            else: 
+                barColorList.append(barColorSchem[5])
+        return barColorList
+    
+def timeDifference(time1, time2):
+    total = time1 - time2
+    seconds = total % 60
+    minutes = total // 60
+    hours = total // 3600
+    if seconds < 10:
+        seconds = f"0{int(seconds)}"
+    else:
+        seconds= int(seconds)
+    if minutes < 10:
+        minutes = f"0{int(minutes)}"
+    else:
+        minutes = int(minutes)
+    if hours < 10:
+        hours = f"0{int(hours)}"
+    else:
+        hours = int(hours)
+    return f"{hours}:{minutes}:{seconds}"
 
 def elapsedTime(startTime):
     endTime= timer()

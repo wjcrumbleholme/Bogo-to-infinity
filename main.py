@@ -1,7 +1,9 @@
 import flet as ft
 import bogo as bo
 from time import sleep
+from random import shuffle
 from timeit import default_timer as timer
+from flet.plotly_chart import PlotlyChart
 
 def main(page: ft.Page):
     # FORMAT: [Divider color, Container border color, Container color, Background color,  Text color, Far bar, Medium bar, Close bar, Actual bar]
@@ -27,7 +29,8 @@ def main(page: ft.Page):
         print(f"New aspect: {aspectX}:{aspectY}")
         sizeMultX = windowX/aspectX 
         sizeMultY = windowY/aspectY 
-        textRatio = ((windowX * windowY) / (aspectX * aspectY))
+        textRatio = sizeMultY
+        # textRatio = ((windowX * windowY) / (aspectX * aspectY))
         genElements(sizeMultX, sizeMultY, textRatio)
         print(mainWindow)
         page.clean()
@@ -60,7 +63,7 @@ def main(page: ft.Page):
         nonlocal bogoSortSelected
         bogoSortSelected = True
         page_update(e)
-        startBogoLogic(0, 3)
+        startBogoLogic(2, 100)
         
     def bogoSortElements(sizeX, sizeY, sizeText, colSchem):
         screenElements = ft.Container(
@@ -93,7 +96,7 @@ def main(page: ft.Page):
                 icon=ft.icons.SHUFFLE,
                 icon_color=colSchem[4],
                 selected_icon_color='#FFFFFF',
-                icon_size=sizeText * 60,
+                icon_size=sizeText * 48,
                 tooltip="Bogo Sort", 
                 on_click=bogoButtonLogic,
             )
@@ -110,7 +113,7 @@ def main(page: ft.Page):
                 icon=colButtonIcon,
                 icon_color=colButtonIconColor,
                 selected_icon_color='#FFFFFF',
-                icon_size=sizeText * 60,
+                icon_size=sizeText * 48,
                 tooltip="Toggle Theme", 
                 on_click=colToggle,
             )
@@ -199,13 +202,41 @@ def main(page: ft.Page):
 
     #----BOGO LOGIC----#
     def startBogoLogic(startNum, endNum):
+        # bo.startLogic(100)
         startTime = timer()
         for i in range(startNum, endNum):
-            bo.elapsedTimeText.value = bo.elapsedTime(startTime)
-            print('test')
-            sleep(1)
-            page.update()
-            
+            bo.makeNewList(i)
+            bo.titleText.value = f"Bogo Sort - {i}"
+            bo.titleText.update()
+            mainLogicLoop(bo.list_shuffled, i, startTime)
+            bo.updatePrevResults()
+    
+    def mainLogicLoop(list, currNum, startTime):
+        listSorted = False
+        tries = 0
+        thisTime = timer()
+        while listSorted == False:
+                listSorted = True
+                for i in range(0, len(list) - 1):
+                    if list[i+1] < list[i]:
+                        listSorted = False
+                tries += 1
+                shuffle(bo.list_shuffled)
+                bo.triesText.value = f"Number of tries: {tries}"
+                bo.triesText.update()
+                measuredTime = timer()
+                currTime = bo.timeDifference(measuredTime, thisTime)
+                
+                
+                if tries % 10 == 0:
+                    bo.currTimeText.value = f"Current sort time - {currTime}"
+                    bo.updateBarChart(bo.list_shuffled,tries)
+                    bo.elapsedTimeText.value = bo.elapsedTime(startTime)
+                    page.update()
+                else:
+                    pass
+        bo.storeInfo(currNum, tries, currTime)
+
 
 ft.app(target=main,port=5000)
 #ft.app(target=main,port=5000,assets_dir="fonts",view=ft.WEB_BROWSER)
