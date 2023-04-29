@@ -61,9 +61,19 @@ def main(page: ft.Page):
         
     def bogoButtonLogic(e):
         nonlocal bogoSortSelected
-        bogoSortSelected = True
-        page_update(e)
-        startBogoLogic(2, 100)
+        if bogoSortSelected:
+            pass
+        else:
+            bogoSortSelected = True
+            page_update(e)
+            startBogoLogic(2, 100)
+
+    def stopButtonLogic(e):
+        global bogoStop
+        nonlocal bogoSortSelected
+        bogoSortSelected = False
+        bogoStop = True
+
         
     def bogoSortElements(sizeX, sizeY, sizeText, colSchem):
         screenElements = ft.Container(
@@ -99,6 +109,14 @@ def main(page: ft.Page):
                 icon_size=sizeText * 48,
                 tooltip="Bogo Sort", 
                 on_click=bogoButtonLogic,
+            )
+        stopButton = ft.IconButton(
+                icon=ft.icons.CANCEL,
+                icon_color='#F76C5E',
+                selected_icon_color='#FFFFFF',
+                icon_size=sizeText * 48,
+                tooltip="Stop", 
+                on_click=stopButtonLogic,
             )
         buttonDivider = ft.Container(
             margin=2,
@@ -137,12 +155,24 @@ def main(page: ft.Page):
                 height= sizeY * 83,
                 border_radius=10,
             )
+        stopButtonContainer = ft.Container(
+                content= stopButton,
+                margin=2,
+                padding=2,
+                alignment=ft.alignment.center,
+                bgcolor=colSchem[2],
+                width= sizeX * 83,
+                height= sizeY * 83,
+                border_radius=10,
+            )
         leftContainer = ft.Container(
             content= ft.Column([
             
                 colButtonContainer,
+                stopButtonContainer,
                 buttonDivider,
                 bogoButtonContainer,
+                
             ],
             alignment=ft.MainAxisAlignment.START,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER
@@ -202,9 +232,13 @@ def main(page: ft.Page):
 
     #----BOGO LOGIC----#
     def startBogoLogic(startNum, endNum):
-        # bo.startLogic(100)
         startTime = timer()
+        global bogoStop
+        bogoStop = False
         for i in range(startNum, endNum):
+            if bogoStop:
+                bo.prevResults = ['','','','','','']
+                break
             bo.makeNewList(i)
             bo.titleText.value = f"Bogo Sort - {i}"
             bo.titleText.update()
@@ -215,7 +249,11 @@ def main(page: ft.Page):
         listSorted = False
         tries = 0
         thisTime = timer()
+        global bogoStop
+        bogoStop = False
         while listSorted == False:
+                if bogoStop:
+                    break
                 listSorted = True
                 for i in range(0, len(list) - 1):
                     if list[i+1] < list[i]:
@@ -228,13 +266,18 @@ def main(page: ft.Page):
                 currTime = bo.timeDifference(measuredTime, thisTime)
                 
                 
-                if tries % 10 == 0:
+                if tries % currNum == 0:
                     bo.currTimeText.value = f"Current sort time - {currTime}"
-                    bo.updateBarChart(bo.list_shuffled,tries)
+                    bo.updateBarChart(bo.list_shuffled)
                     bo.elapsedTimeText.value = bo.elapsedTime(startTime)
                     page.update()
                 else:
                     pass
+
+        bo.updateBarChart(bo.createList(1,currNum))
+        page.update()
+        sleep(0.5)
+        page.update()
         bo.storeInfo(currNum, tries, currTime)
 
 

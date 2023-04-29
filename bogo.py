@@ -233,7 +233,7 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
         width= sizeX * 210,
-        height= sizeY * 110,
+        height= sizeY * 120,
         border_radius=10,
     )
     box3Container = ft.Container(
@@ -243,7 +243,7 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
         width= sizeX * 210,
-        height= sizeY * 110,
+        height= sizeY * 120,
         border_radius=10,
     )
     box5Container = ft.Container(
@@ -253,7 +253,7 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
         width= sizeX * 210,
-        height= sizeY * 110,
+        height= sizeY * 120,
         border_radius=10,
     )
     box2Container = ft.Container(
@@ -263,7 +263,7 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
         width= sizeX * 210,
-        height= sizeY * 110,
+        height= sizeY * 120,
         border_radius=10,
     )
     box4Container = ft.Container(
@@ -273,7 +273,7 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
         width= sizeX * 210,
-        height= sizeY * 110,
+        height= sizeY * 120,
         border_radius=10,
     )
     box6Container = ft.Container(
@@ -283,7 +283,7 @@ def bottomRightContainer(sizeX, sizeY, sizeText, colSchem):
         alignment=ft.alignment.center,
         bgcolor=colSchem[2],
         width= sizeX * 210,
-        height= sizeY * 110,
+        height= sizeY * 120,
         border_radius=10,
     )
     container= ft.Container(
@@ -369,7 +369,10 @@ def sendElementsToOtherFile(sizeX, sizeY, sizeText, colSchem):
 def makeNewList(length):
     global list_shuffled
     list_shuffled = list(range(1, length + 1))
-    shuffle(list_shuffled) 
+    shuffle(list_shuffled)
+
+def createList(r1, r2):
+    return list(range(r1, r2+1)) 
 
 
 def updatePrevResults():
@@ -391,7 +394,7 @@ prevResults = ['','','','','','']
 def storeInfo (currNum, tries, currTime):
     prevResults.insert(0,f"{currNum} values took:\n{currTime}\nTries: {tries}")
 
-def updateBarChart(list,tries):
+def updateBarChart(list):
     barGraph.update_traces(go.Bar(
         y=list,
         marker_color = barColorList(list),
